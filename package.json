@@ -1,0 +1,20 @@
+{
+  "name": "apis.kazs.tech",
+  "version": "0.0.1",
+  "description": "WSS API for personal use",
+  "main": "main.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Phoenix Reid",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "ws": "^8.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.4"
+  }
+}
