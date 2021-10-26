@@ -25,7 +25,7 @@ var App = /** @class */ (function () {
             res.send({ status: 200, message: 'Test confirmed' });
         });
         var server = http.createServer(/**options, */ app);
-        server.listen(8080, function () {
+        server.listen(8080 || process.env.PORT, function () {
             console.log('listening on port 8080');
         });
         var wss = new ws_1.WebSocket.Server({ server: server });
