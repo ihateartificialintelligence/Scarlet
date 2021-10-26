@@ -28,7 +28,7 @@ var App = /** @class */ (function () {
         });
 
         var server = http.createServer(/**options, */ app);
-        server.listen(8080 || process.env.PORT, '0.0.0.0', function () {
+        server.listen(process.env.PORT, function () {
             console.log(`Listening on ${server.address().address}:${server.address().port}`);
         });
         var wss = new ws_1.WebSocket.Server({ server: server });
