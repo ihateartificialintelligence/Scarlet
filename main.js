@@ -20,7 +20,7 @@ const server = http.createServer(app);
 
 // Showing home page
 app.get("/", function (req, res) {
-    res.render("login");
+    res.send({status: 200, message: "OK"})
 });
 
 var port = process.env.PORT || 3000;
