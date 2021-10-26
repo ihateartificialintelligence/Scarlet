@@ -11,8 +11,8 @@ export class App {
         let app = express();
 
         const options:any = {
-            key: fs.readFileSync(__dirname + "\\SSL\\agent2-key.pem"), 
-            cert: fs.readFileSync(__dirname + "\\SSL\\agent2-cert.pem"),
+            key: fs.readFileSync(__dirname + "/SSL/agent2-key.pem"), 
+            cert: fs.readFileSync(__dirname + "/SSL/agent2-cert.pem"),
         };
 
         app.get('/api/v1/', (req:any, res:any) => {

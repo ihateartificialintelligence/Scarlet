@@ -13,8 +13,8 @@ var App = /** @class */ (function () {
     App.startServer = function () {
         var app = express();
         var options = {
-            key: fs.readFileSync(__dirname + "\\SSL\\agent2-key.pem"),
-            cert: fs.readFileSync(__dirname + "\\SSL\\agent2-cert.pem"),
+            key: fs.readFileSync(__dirname + "/SSL/agent2-key.pem"),
+            cert: fs.readFileSync(__dirname + "/SSL/agent2-cert.pem"),
         };
         app.get('/api/v1/', function (req, res) {
             res.send({ status: 200, message: 'Test confirmed' });
