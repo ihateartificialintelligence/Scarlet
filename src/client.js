@@ -20,16 +20,16 @@ var App = /** @class */ (function () {
 
         app.use('/api/v1/', router);
         app.get('/api/v1/', function (req, res) {
-            res.send({ status: 200, message: 'Test confirmed' });
+            res.send({ status: 200, message: `test confirmed at: ${Date.now().toLocaleString()}`});
         });
-        
+
         app.get("/", (req, res) => {
-            res.send({ status: 200, message:"Test Confirmed" });
+            res.send({ status: 200, message:`test confirmed at: ${Date.now().toLocaleString()}` });
         });
 
         var server = http.createServer(/**options, */ app);
-        server.listen(8080 || process.env.PORT, function () {
-            console.log('listening on port 8080');
+        server.listen(8080 || process.env.PORT, '0.0.0.0', function () {
+            console.log(`Listening on ${server.address().address}:${server.address().port}`);
         });
         var wss = new ws_1.WebSocket.Server({ server: server });
         wss.on("connection", function (ws) {
