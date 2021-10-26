@@ -17,13 +17,16 @@ var App = /** @class */ (function () {
             cert: fs.readFileSync(__dirname + "/SSL/agent2-cert.pem"),
         };
         var router = express.Router();
-        router.all('/api/v1/', function (req, res) {
-            res.send("Test confirmed");
-        });
+
         app.use('/api/v1/', router);
         app.get('/api/v1/', function (req, res) {
             res.send({ status: 200, message: 'Test confirmed' });
         });
+        
+        app.get("/", (req, res) => {
+            res.send({ status: 200, message:"Test Confirmed" });
+        });
+
         var server = http.createServer(/**options, */ app);
         server.listen(8080 || process.env.PORT, function () {
             console.log('listening on port 8080');
