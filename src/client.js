@@ -5,50 +5,43 @@ var express = require("express");
 var fs = require("fs");
 var https = require("https");
 var http = require("http");
-var ws_1 = require("ws");
-var auth_check_1 = require("./extra/auth-check");
+var mongoose = require("mongoose");
+var bodyParser = require("body-parser");
 var App = /** @class */ (function () {
     function App() {
     }
-    App.startServer = function () {
+    App.connectDatabase = function (url, options) {
+        mongoose.connect(url, (options || {
+            useFindandModify: false,
+            useNewUrlParser: true,
+            useCreateIndex: true,
+            useUnifiedTopology: true,
+        }));
+    };
+    App.runServer = function (port, host) {
         var app = express();
-        var options = {
-            key: fs.readFileSync(__dirname + "/SSL/agent2-key.pem"),
-            cert: fs.readFileSync(__dirname + "/SSL/agent2-cert.pem"),
-        };
+        var server = http.createServer(app);
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.get('/', function (req, res) {
+            res.send({ status: 200, message: 'OK' });
+        });
         app.get('/api/v1/', function (req, res) {
-            res.send({ status: 200, message: 'Test confirmed' });
+            res.send({ status: 200, message: "OK" });
         });
-        var server = http.createServer(/**options, */ app);
-        server.listen(8080, function () {
-            console.log("listening on: " + server.address().address + ":" + server.address().port);
+        server.listen(port, function () {
+            console.log("Server listening on " + server.address().address + ":" + server.address().port);
         });
-        var wss = new ws_1.WebSocket.Server({ server: server });
-        wss.on("connection", function (ws) {
-            console.log("Client has connected to the server");
-            ws.send({ status: 200, body: {
-                    message: "Connection established",
-                } });
-            ws.on("chain_info", function (ws) {
-                var check = auth_check_1.default.user(ws.data.token);
-                switch (check) {
-                    case true:
-                        return ws.send({ status: 200, body: {
-                                message: "Authentication successful",
-                                /**
-                                 * Query the database to get the user information
-                                 * containing the account information and balance
-                                 */
-                                data: null,
-                            } });
-                    case false:
-                        return ws.send({ status: 401, body: {
-                                message: "Authentication failed",
-                                data: null,
-                            } });
-                }
-            });
-        });
+    };
+    App.fullStart = function (port, url, host, options) {
+        console.time("Server Start Up");
+        try {
+            //this.connectDatabase(url);
+            this.runServer(port);
+            console.timeEnd("Server Start Up");
+        }
+        catch (e) {
+            console.log("Unexpected Error: \n" + e.message + "\n\n");
+        }
     };
     return App;
 }());

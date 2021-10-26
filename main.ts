@@ -1,2 +1,2 @@
 import * as server from "./src/client";
-server.App.startServer();
+server.App.fullStart((process.env.PORT), "")

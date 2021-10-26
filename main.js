@@ -1,4 +1,4 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var server = require("./src/client");
-server.App.startServer();
+server.App.fullStart((process.env.PORT), "");
