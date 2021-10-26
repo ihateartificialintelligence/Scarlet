@@ -31,7 +31,7 @@ var App = /** @class */ (function () {
         server.listen(process.env.PORT, function () {
             console.log(`Listening on ${server.address().address}:${server.address().port}`);
         });
-        var wss = new ws_1.WebSocket.Server({ server: server });
+        /**var wss = new ws_1.WebSocket.Server({ server: server });
         wss.on("connection", function (ws) {
             console.log("Client has connected to the server");
             ws.send({ status: 200, body: {
@@ -47,7 +47,7 @@ var App = /** @class */ (function () {
                                  * Query the database to get the user information
                                  * containing the account information and balance
                                  */
-                                data: "EA Sports Suck",
+                            /*     data: "EA Sports Suck",
                             } });
                     case false:
                         return ws.send({ status: 401, body: {
@@ -56,7 +56,7 @@ var App = /** @class */ (function () {
                             } });
                 }
             });
-        });
+        });*/
     };
     return App;
 }());
