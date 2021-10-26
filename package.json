@@ -12,9 +12,11 @@
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
+    "mongoose": "^6.0.12",
     "ws": "^8.2.3"
   },
   "devDependencies": {
-    "@types/node": "^16.11.4"
+    "@types/node": "^16.11.4",
+    "@types/ws": "^8.2.0"
   }
 }

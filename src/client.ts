@@ -1,32 +1,33 @@
-import express from "express";
-import fs from "fs";
-import https from "https";
+const express = require("express");
+const fs = require("fs");
+const https = require("https");
+const http = require("http");
 import { WebSocket } from "ws";
 import auth_check from "./extra/auth-check";
 import * as chain from "./blockchain";
 
 export class App {
-    public express: express;
-    constructor() {
-        this.startServer();
-    }
-
-    public startServer(): void {
-        this.express = express();
+    static startServer(): void {
+        let app = express();
 
         const options:any = {
-            key: fs.readFileSync(__dirname + "/agent2-key.pem"), 
-            cert: fs.readFileSync(__dirname + "/agent2-cert.pem"),
+            key: fs.readFileSync(__dirname + "\\SSL\\agent2-key.pem"), 
+            cert: fs.readFileSync(__dirname + "\\SSL\\agent2-cert.pem"),
         };
 
         const router = express.Router();
         router.all('/api/v1/', (req:any, res:any) => {
             res.send(`Test confirmed`);
         });
-        this.express.use('/api/v1/', router);
+        app.use('/api/v1/', router);
+        app.get('/api/v1/', (req:any, res:any) => {
+            res.send({ status: 200, message: 'Test confirmed' });
+        });
         
-        const server = https.createServer(options, this.express);
-        server.listen(8080);
+        const server = http.createServer(/**options, */ app);
+        server.listen(8080, () => {
+            console.log('listening on port 8080');
+        });
 
         const wss = new WebSocket.Server({ server });
 
