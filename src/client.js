@@ -13,25 +13,17 @@ var App = /** @class */ (function () {
     App.startServer = function () {
         var app = express();
         var options = {
-            key: fs.readFileSync(__dirname + "/SSL/agent2-key.pem"),
-            cert: fs.readFileSync(__dirname + "/SSL/agent2-cert.pem"),
+            key: fs.readFileSync(__dirname + "\\SSL\\agent2-key.pem"),
+            cert: fs.readFileSync(__dirname + "\\SSL\\agent2-cert.pem"),
         };
-        var router = express.Router();
-
-        app.use('/api/v1/', router);
         app.get('/api/v1/', function (req, res) {
-            res.send({ status: 200, message: `test confirmed at: ${Date.now().toLocaleString()}`});
+            res.send({ status: 200, message: 'Test confirmed' });
         });
-
-        app.get("/", (req, res) => {
-            res.send({ status: 200, message:`test confirmed at: ${Date.now().toLocaleString()}` });
-        });
-
         var server = http.createServer(/**options, */ app);
-        server.listen(process.env.PORT, function () {
-            console.log(`Listening on ${server.address().address}:${server.address().port}`);
+        server.listen(8080, function () {
+            console.log("listening on: " + server.address().address + ":" + server.address().port);
         });
-        /**var wss = new ws_1.WebSocket.Server({ server: server });
+        var wss = new ws_1.WebSocket.Server({ server: server });
         wss.on("connection", function (ws) {
             console.log("Client has connected to the server");
             ws.send({ status: 200, body: {
@@ -47,7 +39,7 @@ var App = /** @class */ (function () {
                                  * Query the database to get the user information
                                  * containing the account information and balance
                                  */
-                            /*     data: "EA Sports Suck",
+                                data: null,
                             } });
                     case false:
                         return ws.send({ status: 401, body: {
@@ -56,7 +48,7 @@ var App = /** @class */ (function () {
                             } });
                 }
             });
-        });*/
+        });
     };
     return App;
 }());

@@ -15,18 +15,13 @@ export class App {
             cert: fs.readFileSync(__dirname + "\\SSL\\agent2-cert.pem"),
         };
 
-        const router = express.Router();
-        router.all('/api/v1/', (req:any, res:any) => {
-            res.send(`Test confirmed`);
-        });
-        app.use('/api/v1/', router);
         app.get('/api/v1/', (req:any, res:any) => {
             res.send({ status: 200, message: 'Test confirmed' });
         });
         
         const server = http.createServer(/**options, */ app);
         server.listen(8080, () => {
-            console.log('listening on port 8080');
+            console.log(`listening on: ${server.address().address}:${server.address().port}`);
         });
 
         const wss = new WebSocket.Server({ server });
