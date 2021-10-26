@@ -13,8 +13,8 @@ var App = /** @class */ (function () {
     App.startServer = function () {
         var app = express();
         var options = {
-            key: fs.readFileSync(__dirname + "\\SSL\\agent2-key.pem"),
-            cert: fs.readFileSync(__dirname + "\\SSL\\agent2-cert.pem"),
+            key: fs.readFileSync(__dirname + "/SSL/agent2-key.pem"),
+            cert: fs.readFileSync(__dirname + "/SSL/agent2-cert.pem"),
         };
         var router = express.Router();
         router.all('/api/v1/', function (req, res) {
