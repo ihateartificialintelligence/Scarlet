@@ -1,16 +1,18 @@
-var VerifyUserMiddleware = require("./middlewares/verifiy.user.middleware"),
-    AuthorizationController = require("./controllers/auth.controllers"),
-    AuthValidationMiddleware = require("../common/middlewares/auth.validation.middleware");
+const VerifyUserMiddleware = require('./middlewares/verify.user.middleware');
+const AuthorizationController = require('./controllers/authorization.controller');
+const AuthValidationMiddleware = require('../common/middlewares/auth.validation.middleware');
 exports.routesConfig = function (app) {
-    app.post('/api/v1/auth', [
+
+    app.post('/auth', [
         VerifyUserMiddleware.hasAuthValidFields,
         VerifyUserMiddleware.isPasswordAndUserMatch,
         AuthorizationController.login
     ]);
-    app.post('/api/v1/auth/refresh', [
-        AuthValidationMiddleware.validJWTneeded,
+
+    app.post('/auth/refresh', [
+        AuthValidationMiddleware.validJWTNeeded,
         AuthValidationMiddleware.verifyRefreshBodyField,
-        AuthValidationMiddleware.validRefreshMethod,
+        AuthValidationMiddleware.validRefreshNeeded,
         AuthorizationController.login
     ]);
 };

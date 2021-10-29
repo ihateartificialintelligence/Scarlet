@@ -1,22 +1,43 @@
-const mongoose = require('mongoose');
-let count = 0;
+const jwt = require('jsonwebtoken'),
+    secret = require('../config/env.config.js').jwt_secret,
+    crypto = require('crypto');
 
-const connectWithRetry = () => {
-    console.log("MongoDB Connection With Retry");
-    
-    mongoose.connect("mongodb+srv://evolt_admins:65dCCvPAETHhmq0z@userdata.qlscj.mongodb.net/UserDatabase?retryWrites=true&w=majority?authMechanism=SCRAM-SHA-1", {
-        useFindAndModify: false,
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-    }).then(() => {
-        console.log("Connected to MongoDB");
-    }).catch(e => {
-        console.log("Error connecting to MongoDB, retry after 5 seconds... ", ++count);
-        setTimeout(connectWithRetry, 5000);
-    });
+exports.verifyRefreshBodyField = (req, res, next) => {
+    if (req.body && req.body.refresh_token) {
+        return next();
+    } else {
+        return res.status(400).send({error: 'need to pass refresh_token field'});
+    }
 };
 
-connectWithRetry();
+exports.validRefreshNeeded = (req, res, next) => {
+    let b = Buffer.from(req.body.refresh_token, 'base64');
+    let refresh_token = b.toString();
+    let hash = crypto.createHmac('sha512', req.jwt.refreshKey).update(req.jwt.userId + secret).digest("base64");
+    if (hash === refresh_token) {
+        req.body = req.jwt;
+        return next();
+    } else {
+        return res.status(400).send({error: 'Invalid refresh token'});
+    }
+};
 
-exports.mongoose = mongoose;
+
+exports.validJWTNeeded = (req, res, next) => {
+    if (req.headers['authorization']) {
+        try {
+            let authorization = req.headers['authorization'].split(' ');
+            if (authorization[0] !== 'Bearer') {
+                return res.status(401).send();
+            } else {
+                req.jwt = jwt.verify(authorization[1], secret);
+                return next();
+            }
+
+        } catch (err) {
+            return res.status(403).send();
+        }
+    } else {
+        return res.status(401).send();
+    }
+};
