@@ -35,5 +35,5 @@ UsersRouter.routesConfig(app);
 ChainRouter.routesConfig(app);
 
 app.listen(config.port, function () {
-    console.log('app listening at port %s', config.port);
+    console.log('app listening at port %s', process.env.PORT);
 });
