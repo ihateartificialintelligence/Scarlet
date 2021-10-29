@@ -1,9 +1,9 @@
 import { userInfo } from "os";
 
-const Mongoose = require("../../common/services/mongo.service").mongoose;
-const Schema = Mongoose.Schema;
+var Mongoose = require("../../common/services/mongo.service").mongoose;
+var Schema = Mongoose.Schema;
 
-const user = new Schema({
+var user = new Schema({
     uname: {
         type: String,
         required: true,
@@ -28,7 +28,7 @@ const user = new Schema({
     }
 });
 
-const User:any = Mongoose.model('Users', user);
+var User:any = Mongoose.model('Users', user);
 
 exports.findByEmail = (email: string) => {
     return User.findOne({ email: email });
@@ -62,7 +62,7 @@ exports.findByName = (name: string) => {
 };
 
 exports.createUser = (userData: any) => {
-    const newUser = new User(userData);
+    var newUser = new User(userData);
     return newUser.save();
 };
 

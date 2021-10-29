@@ -1,4 +1,4 @@
-const Users = require("../models/users.model");
+var Users = require("../models/users.model");
 import crypto from "crypto";
 
 exports.insert = (req:any, res:any) => {

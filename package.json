@@ -1,10 +1,9 @@
 {
-  "name": "apis.kazs.tech",
+  "name": "apiskazstech",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "start": "main.js",
+    "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,9 +12,11 @@
     "body-parser": "^1.19.0",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
-    "paseto": "^3.1.0"
+    "paseto": "^3.1.0",
+    "mongoose": "^6.0.12"
   },
   "devDependencies": {
     "@types/node": "^16.11.6"
-  }
+  },
+  "description": ""
 }

@@ -1,8 +1,8 @@
-var {V4: {sign, verify}, errors, decode} = require('paseto');
+var  {V4: {sign, verify}, errors, decode} = require('paseto');
 
-const jwtSecret = require('../../common/config/env.config.js').jwt_secret;
-const crypt = require('crypto');
-const uuid = require('uuid');
+var jwtSecret = require('../../common/config/env.config.js').jwt_secret;
+var crypt = require('crypto');
+var uuid = require('uuid');
 
 exports.login = (req:any, res:any) => {
     try {
@@ -27,7 +27,7 @@ exports.refresh_token = (req:any, res:any) => {
     try {
         (async() => {
             { 
-                const token = await sign({ sub: req.body.uname }, jwtSecret); 
+                var token = await sign({ sub: req.body.uname }, jwtSecret); 
                 res.status(201).send({accessToken: token});
             }
         })

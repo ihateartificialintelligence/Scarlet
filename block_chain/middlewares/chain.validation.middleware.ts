@@ -1,5 +1,5 @@
-var u = require('../../users/models/users.model');
-var c = require('crypto');
+var  u = require('../../users/models/users.model');
+var  c = require('crypto');
 
 exports.hasAuthValidFields = (req:any, res:any, next:any) => {
     let errors = [];

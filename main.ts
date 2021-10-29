@@ -1,6 +1,6 @@
-const config = require('./common/config/env.config');
+var config = require('./common/config/env.config');
 
-const express = require("express"),
+var express = require("express"),
     app= express(),
     bp = require("body-parser"),
     AuthorizationRouter = require("./auth/routes.config"),

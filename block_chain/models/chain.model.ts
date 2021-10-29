@@ -27,8 +27,8 @@ export class Block {
     ){}
 
     get hash() {
-        const str = JSON.stringify(this);
-        const hash = crypto.createHash('SHA256');
+        var str = JSON.stringify(this);
+        var hash = crypto.createHash('SHA256');
         hash.update(str).end();
         return hash.digest('hex');
     }
@@ -54,10 +54,10 @@ export class Chain {
         console.log("Solving for solution");
 
         while(true) {
-            const hash = crypto.createHash("md5");
+            var hash = crypto.createHash("md5");
             hash.update((nonce + solution).toString()).end();
 
-            const attempt = hash.digest('hex');
+            var attempt = hash.digest('hex');
 
             if (attempt.substr(0, 4) === '0000') {
                 console.log(`Sovled Solution: ${solution}`);
@@ -69,13 +69,13 @@ export class Chain {
     }
 
     addBlock(transaction: Transaction, pubKey: string, sig: Buffer) {
-        const verify = crypto.createVerify('sha256');
+        var verify = crypto.createVerify('sha256');
         verify.update(transaction.toString());
 
-        const valid = verify.verify(pubKey, sig);
+        var valid = verify.verify(pubKey, sig);
 
         if (valid) {
-            const newBlock = new Block(this.lastBlock.hash, transaction);
+            var newBlock = new Block(this.lastBlock.hash, transaction);
             this.mine(newBlock.nonce);
             this.chain.push(newBlock);
         }
@@ -87,7 +87,7 @@ export class Wallet {
     public privateKey: string;
 
     constructor() {
-		const keypair = crypto.generateKeyPairSync('rsa', {
+		var keypair = crypto.generateKeyPairSync('rsa', {
 			modulusLength: 2048,
 			publicKeyEncoding: { type: 'spki', format: 'pem' },
 			privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
@@ -98,10 +98,10 @@ export class Wallet {
 	}
 
     send(amount: number, payeeKey: string) {
-        const transaction = new Transaction(amount, this.publicKey, payeeKey);
-        const sign = crypto.createSign('sha256');
+        var transaction = new Transaction(amount, this.publicKey, payeeKey);
+        var sign = crypto.createSign('sha256');
         sign.update(transaction.toString()).end();
-        const sig = sign.sign(this.privateKey);
+        var sig = sign.sign(this.privateKey);
         Chain.instance.addBlock(transaction, this.publicKey, sig);
     }
 }

@@ -1,5 +1,11 @@
 var config = require('./common/config/env.config');
-var express = require("express"), app = express(), bp = require("body-parser"), AuthorizationRouter = require("./auth/routes.config"), ChainRouter = require('./block_chain/routes.config'), AIRouter = require("./semantics/routes.config"), UsersRouter = require("./users/routes.config");
+var express = require("express"),
+    app = express(),
+    bp = require("body-parser"),
+    AuthorizationRouter = require("./auth/routes.config"),
+    ChainRouter = require('./block_chain/routes.config'),
+    AIRouter = require("./semantics/routes.config"),
+    UsersRouter = require("./users/routes.config");
 app.use(function (req, res, next) {
     res.header("Content-Type", "application/json");
     res.header("Access-Control-Allow-Credentials", 'true');

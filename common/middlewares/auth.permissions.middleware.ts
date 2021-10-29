@@ -1,6 +1,6 @@
-const ADMIN_PERMISSION = 4096;
-const secret = require("../config/env.config")['jwtSecret'];
-var {V4: {sign, verify}, errors, decode} = require('paseto');
+var ADMIN_PERMISSION = 4096;
+var secret = require("../config/env.config")['jwtSecret'];
+var  {V4: {sign, verify}, errors, decode} = require('paseto');
 
 exports.minimumPermissionLevelRequired = (required_permission_level) => {
     return (req, res, next) => {
