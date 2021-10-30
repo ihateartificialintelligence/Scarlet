@@ -92,7 +92,6 @@ exports.userController = (req, res) => {
             reason?: req.body.option,
         });
         UserModel.removeById(user.id);
-
     } else {
         return res.status(404).send({ message: "Invalid method. Please use POST/PUT or DELETE methods." });
     }
