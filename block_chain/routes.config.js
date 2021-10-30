@@ -12,7 +12,10 @@ exports.routesConfig = function (app) {
         ChainInfo.list
     ]);
     app.get('/api/v1/chain_info/lastBlock', [
-        PermissionMiddleware.minimumPermissionLevelRequired(USER),
+        //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         ChainInfo.findLastBlock
     ]);
+    app.get('/api/v1/chain_info/pay/:user/:amount', [
+        ChainInfo.pay
+    ])
 };

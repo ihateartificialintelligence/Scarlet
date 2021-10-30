@@ -2,11 +2,13 @@ const mongoose = require('../../common/services/mongoose.service').mongoose;
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+    uuid: Number,
     firstName: String,
     lastName: String,
     email: String,
     password: String,
-    permissionLevel: Number
+    permissionLevel: Number,
+    token: String,
 });
 
 userSchema.virtual('id').get(function () {

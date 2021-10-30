@@ -41,3 +41,59 @@ exports.findLastBlock = (req, res) => {
         }});
     }
 };
+
+exports.pay = (req,res) => {
+    /**
+     * /chain_info/pay/:user/:amount
+     * :user - contacts DB for user ID
+     * :amount - verifies that it's isSafeValidInteger() before sending 
+     * and updating the Database valus
+     * 
+     * (req.body)
+     *  - TOKEN - Verify the user
+     *  - UUID - To cross-ref the request and user
+     */
+}
+
+exports.bank = (req, res) => {
+    /**
+     * /chain_info/bank/
+     * Views the account balance of the user
+     * 
+     * (req.body)
+     *  - UUID  - cross ref the user
+     *  - Token -  to verify the request
+     *  - Password - Optional
+     */
+}
+
+exports.userController = (req, res) => {
+    /**
+     * /chain_info/account/
+     * Create or Delete user accounts from the database
+     * 
+     * (req.body)
+     *  - UUID  - cross ref the user
+     *  - Token -  to verify the request
+     *  - Reason - Optional
+     * 
+     * (req.method)
+     *  - DELETE - Delete user account from DB
+     *  - POST/PUT - Create user account and update DB
+     */
+    if (req.method === ("POST")) {
+        const username = req.body.username,
+            password = req.body.password;
+        UserModel.createUser({ username: username, password: password })
+
+    } else if (req.method === "DELETE") {
+        const user = UserModel.find({ id: req.body.uuid,
+            token: req.body.token,
+            reason?: req.body.option,
+        });
+        UserModel.removeById(user.id);
+
+    } else {
+        return res.status(404).send({ message: "Invalid method. Please use POST/PUT or DELETE methods." });
+    }
+}
