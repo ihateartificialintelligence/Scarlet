@@ -17,5 +17,9 @@ exports.routesConfig = function (app) {
     ]);
     app.get('/api/v1/chain_info/pay/:user/:amount', [
         ChainInfo.pay
-    ])
+    ]);
+    app.get('/api/v1/chain_info/bank', [
+        //PermissionMiddleware.minimumPermissionLevelRequired(USER),
+        ChainInfo.bank
+    ]);
 };
