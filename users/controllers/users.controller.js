@@ -41,7 +41,7 @@ exports.insert = (req, res) => {
             privateKey: new Wallet().privateKey, 
             publicKey: new Wallet().publicKey, 
         }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
-        return res.status(200).send(`Successfully created the user\n ${user}`)
+        return res.status(200).send(`Successfully created the user\n ${UserModel.findByToken(user.token)}`)
 
     } else if (req.method === "DELETE") {
         const user = UserModel.find({ 
@@ -57,7 +57,7 @@ exports.insert = (req, res) => {
 };
 
 exports.list = (req, res) => {
-    if (UserModel.find({uuid: req.body.id, token: req.body.token})){
+    if (UserModel.find({uuid: req.body.id, token: req.body.token}) == true){
         let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
         let page = 0;
         if (req.query) {
