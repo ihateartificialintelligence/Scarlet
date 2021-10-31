@@ -13,7 +13,7 @@ const options = {
 };
 const connectWithRetry = () => {
     console.log('MongoDB connection with retry')
-    mongoose.connect("mongodb+srv://phoenix_dev:7fYGFptqFsptV7ne@apis-kazs-tech.oelmi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", options).then(()=>{
+    mongoose.connect("mongodb+srv://phoenix_dev:7fYGFptqFsptV7ne@apis-kazs-tech.oelmi.mongodb.net/apiData?retryWrites=true&w=majority", options).then(()=>{
         console.log('MongoDB is connected')
     }).catch(err=>{
         console.log('MongoDB connection unsuccessful, retry after 5 seconds. ', ++count);

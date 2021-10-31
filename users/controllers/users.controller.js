@@ -1,5 +1,6 @@
 const UserModel = require('../models/users.model'),
     crypto = require('crypto'),
+    bcrypt = require('bcrypt'),
     { Transaction, Block, Wallet, Chain } = require("../../block_chain/models/transaction.model");
 
 exports.insert = async(req, res) => {
