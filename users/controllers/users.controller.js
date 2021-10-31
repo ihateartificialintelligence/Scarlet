@@ -32,7 +32,7 @@ exports.insert = async(req, res) => {
             const bcrypt = require("bcrypt"),
             saltRounds = 15;
 
-        bcrypt.genSalt(saltRounds, (e, salt) => {
+        bcrypt.genSalt(saltRounds, async (e, salt) => {
             bcrypt.hash(password, salt, (e, hash) => {
                 let user = await UserModel.createUser({
                     uuid: Math.floor(Math.random()*999999999999),
