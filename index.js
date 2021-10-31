@@ -34,6 +34,6 @@ UsersRouter.routesConfig(app);
 //SemanticsRouter.routesConfig(app);
 ChainRouter.routesConfig(app);
 
-app.listen(config.port, function () {
-    console.log('app listening at port %s', config.port);
+app.listen((process.env.PORT || config.port), "0.0.0.0", function () {
+    console.log('app listening at port %s', (process.env.PORT || config.port));
 });
