@@ -30,7 +30,7 @@ exports.insert = async(req, res) => {
         const username = req.body.username,
             password = req.body.password;
         
-        let user = UserModel.createUser({
+        let user = await UserModel.createUser({
             uuid: Math.floor(Math.random()*999999999999),
             username: username, 
             email: req.body.email,
@@ -41,7 +41,7 @@ exports.insert = async(req, res) => {
             privateKey: new Wallet().privateKey, 
             publicKey: new Wallet().publicKey, 
         }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
-        return res.status(200).send(`Successfully created the user\n ${await UserModel.find({username: req.body.username})}`)
+        return res.status(200).send(`Successfully created the user\n ${await user}`)
 
     } else if (req.method === "DELETE") {
         const user = UserModel.find({ 
