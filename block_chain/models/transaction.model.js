@@ -38,7 +38,7 @@ exports.Block = Block;
 var  Chain = (function () {
     function Chain() {
         this.chain = [
-            new Block('', new Transaction(100, 'genesis', 'exodus')),
+            setTimeout((new Block('', new Transaction(100, 'genesis', 'exodus'))), 5000),
         ];
     }
     Object.defineProperty(Chain.prototype, "lastBlock", {
