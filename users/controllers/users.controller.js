@@ -35,11 +35,13 @@ exports.insert = async(req, res) => {
 
         bcrypt.genSalt(saltRounds, async (e, salt) => {
             bcrypt.hash(password, salt, async (e, hash) => {
+                if (e) return res.send({status: 501, message:"Create Failure"}), console.log(e);
+                
                 let user = await UserModel.createUser({
                     uuid: Math.floor(Math.random()*999999999999),
                     username: username, 
                     email: req.body.email,
-                    password: password, 
+                    password: hash, 
                     permissionLevel: 1,
                     token: `u.${makeid(12)}_${makeid(8)}`, 
                     uWallet: new Wallet(),
