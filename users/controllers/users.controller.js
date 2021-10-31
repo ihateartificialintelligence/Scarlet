@@ -74,7 +74,7 @@ exports.list = (req, res) => {
 };
 
 exports.getById = (req, res) => {
-    if (UserModel.find({uuid: req.body.id, token: req.body.token, password: req.body.password} == true)) { 
+    if (UserModel.find({uuid: req.body.id, token: req.body.token, password: req.body.password}) == true) { 
         UserModel.findById(req.params.userId)
         .then((result) => {
             res.status(200).send(result);
@@ -85,9 +85,9 @@ exports.getById = (req, res) => {
 };
 exports.patchById = (req, res) => {
     if (req.body.password) {
-        let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
-        //req.body.password = salt + "$" + hash;
+    let salt = crypto.randomBytes(16).toString('base64');
+    let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
+    //req.body.password = salt + "$" + hash;
     }
     if (UserModel.find({uuid: req.body.id, token: req.body.token})){
         UserModel.patchUser(req.params.userId, req.body)
