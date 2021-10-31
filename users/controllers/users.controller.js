@@ -11,7 +11,7 @@ exports.insert = (req, res) => {
         for ( var i = 0; i < length; i++ ) {
           result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        return res.send({ status: 200, message:result});
+        //return res.send({ status: 200, message:result});
     }
     /**
      * /users
@@ -30,7 +30,7 @@ exports.insert = (req, res) => {
         const username = req.body.username,
             password = req.body.password;
         
-        UserModel.createUser({
+        let user = new UserModel.createUser({
             uuid: Math.floor(Math.random()*999999999999),
             username: username, 
             email: req.body.email,
@@ -40,7 +40,8 @@ exports.insert = (req, res) => {
             uWallet: new Wallet(),
             privateKey: new Wallet().privateKey, 
             publicKey: new Wallet().publicKey, 
-        })
+        }); user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
+        return res.status(200).send(`Successfully created the user\n ${user}`)
 
     } else if (req.method === "DELETE") {
         const user = UserModel.find({ 
@@ -49,6 +50,7 @@ exports.insert = (req, res) => {
             reason: req.body.reason,
         });
         UserModel.removeById(user.id);
+        return res.status(200).send("Successfully deleted user account");
     } else {
         return res.status(401).send({ message: "Invalid method. Please use POST/PUT or DELETE methods." });
     }
@@ -90,7 +92,7 @@ exports.patchById = (req, res) => {
     if (UserModel.find({uuid: req.body.id, token: req.body.token})){
         UserModel.patchUser(req.params.userId, req.body)
             .then((result) => {
-                res.status(204).send({});
+                res.status(204).send(`Successfully patched user\n ${result}`);
             });
     } else res.status(401).send({ message: "Authorization Failed" });
 
@@ -100,7 +102,7 @@ exports.removeById = (req, res) => {
     if (UserModel.find({uuid: req.body.id, token: req.body.token})){
         UserModel.removeById(req.params.userId)
         .then((result)=>{
-            res.status(204).send({});
+            res.status(204).send(`Account removed successfully\n ${result}`);
         });
     } else res.status(401).send({ message: "Authorization Failed" });
 };
