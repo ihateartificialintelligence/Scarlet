@@ -89,7 +89,7 @@ exports.userController = (req, res) => {
     } else if (req.method === "DELETE") {
         const user = UserModel.find({ id: req.body.uuid,
             token: req.body.token,
-            reason?: req.body.option,
+            reason: req.body.reason,
         });
         UserModel.removeById(user.id);
     } else {
