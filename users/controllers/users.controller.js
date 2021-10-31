@@ -11,7 +11,7 @@ exports.insert = (req, res) => {
         for ( var i = 0; i < length; i++ ) {
           result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        return result;
+        return res.send({ status: 200, message:result});
     }
     /**
      * /users

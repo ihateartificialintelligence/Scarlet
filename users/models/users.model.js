@@ -8,7 +8,7 @@ const userSchema = new Schema({
     password: String,
     permissionLevel: Number,
     token: {type: String, unique: true },
-    uWallet: String,
+    //uWallet: String,
     privateKey: String,
     publicKey: String,
 });
