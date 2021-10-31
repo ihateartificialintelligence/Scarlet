@@ -1,5 +1,5 @@
-const UserModel = require('../models/users.model');
-const crypto = require('crypto'),
+const UserModel = require('../models/users.model'),
+    crypto = require('crypto'),
     { Transaction, Block, Wallet, Chain } = require("../../block_chain/models/transaction.model");
 
 exports.insert = (req, res) => {
