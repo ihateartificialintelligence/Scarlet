@@ -1,5 +1,6 @@
 const UserModel = require('../models/users.model');
-const crypto = require('crypto');
+const crypto = require('crypto'),
+    { Transaction, Block, Wallet, Chain } = require("../models/transaction.model");
 
 exports.insert = (req, res) => {
     const Genesis = new Wallet();
