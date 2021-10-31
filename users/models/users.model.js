@@ -34,8 +34,8 @@ exports.findByEmail = (email) => {
     if (!!find) return true, find;
     if (!find) return false;
 };
-exports.find = (data) => {
-    let find = User.find(data);
+exports.find = async (data) => {
+    let find = await User.find(data);
     if (!!find) return true, find;
     if (!find) return false;
 };

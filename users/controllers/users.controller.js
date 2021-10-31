@@ -2,7 +2,7 @@ const UserModel = require('../models/users.model'),
     crypto = require('crypto'),
     { Transaction, Block, Wallet, Chain } = require("../../block_chain/models/transaction.model");
 
-exports.insert = (req, res) => {
+exports.insert = async(req, res) => {
     //const Genesis = new Wallet();
     function makeid(length) {
         var result = '';
@@ -41,7 +41,7 @@ exports.insert = (req, res) => {
             privateKey: new Wallet().privateKey, 
             publicKey: new Wallet().publicKey, 
         }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
-        return res.status(200).send(`Successfully created the user\n ${UserModel.findByToken(user.token)}`)
+        return res.status(200).send(`Successfully created the user\n ${await UserModel.find({username: req.body.username})}`)
 
     } else if (req.method === "DELETE") {
         const user = UserModel.find({ 
