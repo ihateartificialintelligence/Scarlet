@@ -2,7 +2,7 @@ const mongoose = require('../../common/services/mongoose.service').mongoose;
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    id: {type: Number, unique: true},
+    uuid: {type: Number, unique: true},
     username: String,
     email: String,
     password: String,
@@ -23,7 +23,7 @@ userSchema.set('toJSON', {
 });
 
 userSchema.findById = function (cb) {
-    return this.model('Users').find({id: this.id}, cb);
+    return this.model('Users').find({uuid: this.id}, cb);
 };
 
 const User = mongoose.model('Users', userSchema);
@@ -67,13 +67,13 @@ exports.list = (perPage, page) => {
 
 exports.patchUser = (id, userData) => {
     return User.findOneAndUpdate({
-        _id: id
+        uuid: id
     }, userData);
 };
 
 exports.removeById = (userId) => {
     return new Promise((resolve, reject) => {
-        User.deleteMany({_id: userId}, (err) => {
+        User.deleteMany({uuid: userId}, (err) => {
             if (err) {
                 reject(err);
             } else {

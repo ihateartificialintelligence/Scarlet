@@ -30,7 +30,7 @@ exports.insert = (req, res) => {
             password = req.body.password;
         
         UserModel.createUser({
-            id: Math.floor(Math.random()*999999999999),
+            uuid: Math.floor(Math.random()*999999999999),
             username: username, 
             email: req.body.email,
             password: password, 
