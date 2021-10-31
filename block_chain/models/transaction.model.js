@@ -38,7 +38,7 @@ exports.Block = Block;
 var  Chain = (function () {
     function Chain() {
         this.chain = [
-            setTimeout((new Block('', new Transaction(100, 'genesis', 'exodus'))), 5000),
+            new Block('', new Transaction(100, 'genesis', 'exodus')),
         ];
     }
     Object.defineProperty(Chain.prototype, "lastBlock", {
@@ -51,16 +51,15 @@ var  Chain = (function () {
     Chain.prototype.mine = function (nonce) {
         var  solution = 1;
         console.log("Solving for solution");
-        while (true) {
-            var hash = crypto.createHash("md5");
-            hash.update((nonce + solution).toString()).end();
-            var attempt = hash.digest('hex');
-            if (attempt.substr(0, 4) === '0000') {
-                console.log("Sovled Solution: " + solution);
-                return solution;
-            }
-            solution += 1;
+        const { Worker } = require("worker_threads");
+        function mine() {
+            const worker = new Worker('./miner.js');
+            worker.on("online", () => console.log("Mining Worker Activated..."));
+            worker.on("message", (message) => console.log(message));
+            worker.on("error", (err) => console.log(err), worker.terminate());
+            worker.on("exit", () => console.log("Worker exited..."), worker.terminate());
         }
+        mine();
     };
     Chain.prototype.addBlock = function (transaction, pubKey, sig) {
         var verify = crypto.createVerify('sha256');
