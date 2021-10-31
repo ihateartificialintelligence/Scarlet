@@ -40,7 +40,7 @@ exports.insert = (req, res) => {
             uWallet: new Wallet(),
             privateKey: new Wallet().privateKey, 
             publicKey: new Wallet().publicKey, 
-        }); user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
+        }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
         return res.status(200).send(`Successfully created the user\n ${user}`)
 
     } else if (req.method === "DELETE") {
