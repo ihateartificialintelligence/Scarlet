@@ -3,7 +3,7 @@ var  ValidationMiddleware = require('../common/middlewares/auth.validation.middl
 var  config = require("../common/config/env.config");
 var  DEV = config.permissionLevels.ADMIN, USER = config.permissionLevels.NORMAL_USER;
 
-// TODO: Add return from mock DB
+// TODO: (AI) Add return from mock DB
 exports.routesConfig = function (app) {
     app.post('/api/v1/ai_semantics', [
         PermissionMiddleware.minimumPermissionLevelRequired(DEV),

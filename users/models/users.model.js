@@ -2,13 +2,15 @@ const mongoose = require('../../common/services/mongoose.service').mongoose;
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    uuid: Number,
-    firstName: String,
-    lastName: String,
+    id: {type: Number, unique: true},
+    username: String,
     email: String,
     password: String,
     permissionLevel: Number,
     token: String,
+    uWallet: String,
+    privateKey: String,
+    publicKey: String,
 });
 
 userSchema.virtual('id').get(function () {
@@ -28,8 +30,11 @@ const User = mongoose.model('Users', userSchema);
 
 
 exports.findByEmail = (email) => {
-    return User.find({email: email});
+    let find = User.find({email: email});
+    if (!!find) return true, find;
+    if (!!find) return false;
 };
+
 exports.findById = (id) => {
     return User.findById(id)
         .then((result) => {
