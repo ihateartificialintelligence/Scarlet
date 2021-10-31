@@ -33,7 +33,9 @@ AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
 //SemanticsRouter.routesConfig(app);
 ChainRouter.routesConfig(app);
-
+app.get('/api/v1', (req, res) => {
+    return res.send("Docs coming soon");
+})
 app.listen((process.env.PORT || config.port), "0.0.0.0", function () {
     console.log('app listening at port %s', (process.env.PORT || config.port));
 });
