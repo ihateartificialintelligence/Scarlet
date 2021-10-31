@@ -93,8 +93,8 @@ exports.bank = (req, res) => {
 };
 
 exports.mine = (req, res) => {
-    if (req.method == 'GET' && UserModel.findById(req.body.id) == true) {
-        let usrWallet  = UserModel.findById(req.body.id)
+    if (req.method == 'GET' && UserModel.find({uuid: req.body.id, token: req.body.token}) == true) {
+        let usrWallet  = UserModel.find(req.body.id)
         if (usrWallet) {
             let amount = new Chain().mine() / 5;
             if (amount <= 0) amount += Math.floor(Math.max(500), Math.random());
@@ -120,8 +120,11 @@ exports.userController = (req, res) => {
      * Create or Delete user accounts from the database
      * 
      * (req.body)
-     *  - UUID  - cross ref the user
-     *  - Token -  to verify the request
+     *  - Email
+     *  - Password
+     *  - Username
+     * 
+     * 
      *  - Reason - Optional
      * 
      * (req.method)

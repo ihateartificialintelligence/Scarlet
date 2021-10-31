@@ -7,7 +7,7 @@ const userSchema = new Schema({
     email: String,
     password: String,
     permissionLevel: Number,
-    token: String,
+    token: {type: String, unique: true },
     uWallet: String,
     privateKey: String,
     publicKey: String,
@@ -32,9 +32,18 @@ const User = mongoose.model('Users', userSchema);
 exports.findByEmail = (email) => {
     let find = User.find({email: email});
     if (!!find) return true, find;
-    if (!!find) return false;
+    if (!find) return false;
 };
-
+exports.find = (data) => {
+    let find = User.find(data);
+    if (!!find) return true, find;
+    if (!find) return false;
+};
+exports.findByToken = (token) => {
+    let find = User.find({token: token});
+    if (!!find) return true, find;
+    if (!find) return false;
+}
 exports.findById = (id) => {
     return User.findById(id)
         .then((result) => {

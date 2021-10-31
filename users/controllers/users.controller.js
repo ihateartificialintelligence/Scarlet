@@ -49,7 +49,7 @@ exports.insert = (req, res) => {
         });
         UserModel.removeById(user.id);
     } else {
-        return res.status(404).send({ message: "Invalid method. Please use POST/PUT or DELETE methods." });
+        return res.status(401).send({ message: "Invalid method. Please use POST/PUT or DELETE methods." });
     }
 };
 
@@ -62,35 +62,44 @@ exports.list = (req, res) => {
             page = Number.isInteger(req.query.page) ? req.query.page : 0;
         }
     }
-    UserModel.list(limit, page)
+    if (UserModel.find({uuid: req.body.id, token: req.body.token})){
+        UserModel.list(limit, page)
         .then((result) => {
             res.status(200).send(result);
         })
+    } else res.status(401).send({ message: "Authorization Failed" });
 };
 
 exports.getById = (req, res) => {
-    UserModel.findById(req.params.userId)
+    if (UserModel.find({uuid: req.body.id, token: req.body.token, password: req.body.password} == true)) { 
+        UserModel.findById(req.params.userId)
         .then((result) => {
             res.status(200).send(result);
         });
+    } else {
+        return res.status(401).send({ message: "Authentication Failed"})
+    }
 };
 exports.patchById = (req, res) => {
     if (req.body.password) {
         let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
-        req.body.password = salt + "$" + hash;
+        //req.body.password = salt + "$" + hash;
     }
-
-    UserModel.patchUser(req.params.userId, req.body)
-        .then((result) => {
-            res.status(204).send({});
-        });
+    if (UserModel.find({uuid: req.body.id, token: req.body.token})){
+        UserModel.patchUser(req.params.userId, req.body)
+            .then((result) => {
+                res.status(204).send({});
+            });
+    } else res.status(401).send({ message: "Authorization Failed" });
 
 };
 
 exports.removeById = (req, res) => {
-    UserModel.removeById(req.params.userId)
+    if (UserModel.find({uuid: req.body.id, token: req.body.token})){
+        UserModel.removeById(req.params.userId)
         .then((result)=>{
             res.status(204).send({});
         });
+    } else res.status(401).send({ message: "Authorization Failed" });
 };
