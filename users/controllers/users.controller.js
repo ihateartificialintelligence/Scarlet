@@ -27,22 +27,27 @@ exports.insert = async(req, res) => {
      *  - POST/PUT - Create user account and update DB
      */
     if (req.method === ("POST")) {
-        const username = req.body.username,
+        let username = req.body.username,
             password = req.body.password;
-        
-        let user = await UserModel.createUser({
-            uuid: Math.floor(Math.random()*999999999999),
-            username: username, 
-            email: req.body.email,
-            password: password, 
-            permissionLevel: 1,
-            token: `u.${makeid(12)}_${makeid(8)}`, 
-            uWallet: new Wallet(),
-            privateKey: new Wallet().privateKey, 
-            publicKey: new Wallet().publicKey, 
-        }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
-        return res.status(200).send(`Successfully created the user\n ${await user}`)
+            const bcrypt = require("bcrypt"),
+            saltRounds = 15;
 
+        bcrypt.genSalt(saltRounds, (e, salt) => {
+            bcrypt.hash(password, salt, (e, hash) => {
+                let user = await UserModel.createUser({
+                    uuid: Math.floor(Math.random()*999999999999),
+                    username: username, 
+                    email: req.body.email,
+                    password: password, 
+                    permissionLevel: 1,
+                    token: `u.${makeid(12)}_${makeid(8)}`, 
+                    uWallet: new Wallet(),
+                    privateKey: new Wallet().privateKey, 
+                    publicKey: new Wallet().publicKey, 
+                }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
+                return res.status(200).send(`Successfully created the user\n ${await user}\nPlease don't forget your password! ${password}`)
+            })
+        })
     } else if (req.method === "DELETE") {
         const user = UserModel.find({ 
             id: req.body.id,
@@ -57,52 +62,78 @@ exports.insert = async(req, res) => {
 };
 
 exports.list = (req, res) => {
-    if (UserModel.find({uuid: req.body.id, token: req.body.token}) == true){
-        let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
-        let page = 0;
-        if (req.query) {
-            if (req.query.page) {
-                req.query.page = parseInt(req.query.page);
-                page = Number.isInteger(req.query.page) ? req.query.page : 0;
+    async function checkUser(password) {
+        //... fetch user from a db etc.
+        let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
+
+        const match = await bcrypt.compare(password, await user.password);
+    
+        if(match) {
+            let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
+            let page = 0;
+            if (req.query) {
+                if (req.query.page) {
+                    req.query.page = parseInt(req.query.page);
+                    page = Number.isInteger(req.query.page) ? req.query.page : 0;
+                }
             }
-        }
-        UserModel.list(limit, page)
-            .then((result) => {
-                res.status(200).send(result);
-            })
-    } else res.status(401).send({ message: "Authorization Failed" });
+            UserModel.list(limit, page)
+                .then((result) => {
+                    res.status(200).send(result);
+                })
+        } else res.status(401).send({ message: "Authorization Failed" });
+    }
+    checkUser(req.body.password);
 };
 
 exports.getById = (req, res) => {
-    if (UserModel.find({uuid: req.body.id, token: req.body.token, password: req.body.password}) == true) { 
-        UserModel.findById(req.params.userId)
-        .then((result) => {
-            res.status(200).send(result);
-        });
-    } else {
-        return res.status(401).send({ message: "Authentication Failed"})
+    async function checkUser(password) {
+        //... fetch user from a db etc.
+        let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
+
+        const match = await bcrypt.compare(password, await user.password);
+    
+        if (match) { 
+            UserModel.findById(req.body.id)
+            .then((result) => {
+                res.status(200).send(result);
+            });
+        } else {
+            return res.status(401).send({ message: "Authentication Failed"})
+        }
     }
+    checkUser(req.body.password);
 };
 exports.patchById = (req, res) => {
-    if (req.body.password) {
-    let salt = crypto.randomBytes(16).toString('base64');
-    let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
-    //req.body.password = salt + "$" + hash;
-    }
-    if (UserModel.find({uuid: req.body.id, token: req.body.token})){
-        UserModel.patchUser(req.params.userId, req.body)
-            .then((result) => {
-                res.status(204).send(`Successfully patched user\n ${result}`);
-            });
-    } else res.status(401).send({ message: "Authorization Failed" });
+    async function checkUser(password) {
+        //... fetch user from a db etc.
+        let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
 
+        const match = await bcrypt.compare(password, await user.password);
+    
+        if (match){
+            UserModel.patchUser(req.body.id, req.body)
+                .then((result) => {
+                    res.status(204).send(`Successfully patched user\n ${result}`);
+                });
+        } else res.status(401).send({ message: "Authorization Failed" });
+    }
+    checkUser(req.body.password);
 };
 
 exports.removeById = (req, res) => {
-    if (UserModel.find({uuid: req.body.id, token: req.body.token})){
-        UserModel.removeById(req.params.userId)
-        .then((result)=>{
-            res.status(204).send(`Account removed successfully\n ${result}`);
-        });
-    } else res.status(401).send({ message: "Authorization Failed" });
+    async function checkUser(password) {
+        //... fetch user from a db etc.
+        let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
+
+        const match = await bcrypt.compare(password, await user.password);
+    
+        if (match){
+            UserModel.removeById(req.body.id)
+            .then((result)=>{
+                res.status(204).send(`Account removed successfully\n ${result}`);
+            });
+        } else res.status(401).send({ message: "Authorization Failed" });
+    }
+    checkUser(req.body.password);
 };
