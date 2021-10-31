@@ -52,14 +52,24 @@ var  Chain = (function () {
         var  solution = 1;
         console.log("Solving for solution");
         const { Worker } = require("worker_threads");
-        function mine() {
+        /**function mine() {
             const worker = new Worker('./miner.js');
             worker.on("online", () => console.log("Mining Worker Activated..."));
             worker.on("message", (message) => console.log(message));
             worker.on("error", (err) => console.log(err), worker.terminate());
             worker.on("exit", () => console.log("Worker exited..."), worker.terminate());
         }
-        mine();
+        mine();**/
+        while (true) {
+            var hash = crypto.createHash("md5");
+            hash.update((nonce + solution).toString()).end();
+            var attempt = hash.digest('hex');
+            if (attempt.substr(0, 4) === '0000') {
+                console.log("Sovled Solution: " + solution);
+                return solution;
+            }
+            solution += 1;
+        }
     };
     Chain.prototype.addBlock = function (transaction, pubKey, sig) {
         var verify = crypto.createVerify('sha256');
