@@ -44,7 +44,7 @@ exports.insert = async(req, res) => {
                     email: req.body.email,
                     password: hash, 
                     permissionLevel: 1,
-                    token: `u.${makeid(12)}_${makeid(8)}`, 
+                    token: `u.${makeid(43)}_${makeid(28)}`, 
                     uWallet: new Wallet(),
                     privateKey: new Wallet().privateKey, 
                     publicKey: new Wallet().publicKey, 
