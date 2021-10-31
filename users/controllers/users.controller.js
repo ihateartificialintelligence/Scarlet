@@ -3,7 +3,7 @@ const UserModel = require('../models/users.model'),
     { Transaction, Block, Wallet, Chain } = require("../../block_chain/models/transaction.model");
 
 exports.insert = (req, res) => {
-    const Genesis = new Wallet();
+    //const Genesis = new Wallet();
     function makeid(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -37,7 +37,7 @@ exports.insert = (req, res) => {
             password: password, 
             permissionLevel: 1,
             token: `u.${makeid(12)}_${makeid(8)}`, 
-            uWallet: new Wallet().send(5, Genesis.publicKey), 
+            uWallet: new Wallet(),
             privateKey: new Wallet().privateKey, 
             publicKey: new Wallet().publicKey, 
         })
