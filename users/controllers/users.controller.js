@@ -33,7 +33,7 @@ exports.insert = async(req, res) => {
             saltRounds = 15;
 
         bcrypt.genSalt(saltRounds, async (e, salt) => {
-            bcrypt.hash(password, salt, (e, hash) => {
+            bcrypt.hash(password, salt, async (e, hash) => {
                 let user = await UserModel.createUser({
                     uuid: Math.floor(Math.random()*999999999999),
                     username: username, 
