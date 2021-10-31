@@ -12,6 +12,7 @@ exports.insert = async(req, res) => {
         for ( var i = 0; i < length; i++ ) {
           result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
+        return result;
         //return res.send({ status: 200, message:result});
     }
     /**
@@ -36,7 +37,7 @@ exports.insert = async(req, res) => {
         bcrypt.genSalt(saltRounds, async (e, salt) => {
             bcrypt.hash(password, salt, async (e, hash) => {
                 if (e) return res.send({status: 501, message:"Create Failure"}), console.log(e);
-                
+
                 let user = await UserModel.createUser({
                     uuid: Math.floor(Math.random()*999999999999),
                     username: username, 
