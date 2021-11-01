@@ -1,8 +1,8 @@
 const config = require('./common/config/env.config.js');
-
+const path = require("node:path")
 const express = require('express');
 const app = express();
-
+const marked = require("marked");
 const AuthorizationRouter = require('./auth/routes.config');
 const UsersRouter = require('./users/routes.config');
 const SemanticsRouter = require('./semantics/routes.config');
@@ -13,7 +13,6 @@ StartChain;
 const genesis = new StartChain.Wallet();
 const exodus = new StartChain.Wallet();
 genesis.send(50, exodus.publicKey)
-exodus.send(25, genesis.publicKey);
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -27,8 +26,8 @@ app.use(function (req, res, next) {
         return next();
     }
 });
+app.get('/api/v1/docs', (req, res) => res.sendFile(__dirname, "/docs/README.md"));
 
-app.use(express.json());
 AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
 //SemanticsRouter.routesConfig(app);

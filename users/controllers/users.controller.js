@@ -1,8 +1,12 @@
 const UserModel = require('../models/users.model'),
     crypto = require('crypto'),
     bcrypt = require('bcrypt'),
+    path=require('path'),
     { Transaction, Block, Wallet, Chain } = require("../../block_chain/models/transaction.model");
 
+exports.docs = (req,res) => {
+    res.sendFile(path.resolve("docs/README.html"));
+}
 exports.insert = async(req, res) => {
     //const Genesis = new Wallet();
     function makeid(length) {

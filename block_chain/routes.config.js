@@ -8,12 +8,12 @@ var  DEV = config.permissionLevels.ADMIN, USER = config.permissionLevels.NORMAL_
 // COMPLETED: Add User List to Mock DB - COMPLETED in /users
 exports.routesConfig = function (app) {
     app.get('/api/v1/chain_info', [
-        //ValidationMiddleware.validJWTNeeded,
+        ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         ChainInfo.list
     ]);
     app.get('/api/v1/chain_info/lastBlock', [
-        //ValidationMiddleware.validJWTNeeded,
+        ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         ChainInfo.findLastBlock
     ]);
@@ -23,12 +23,12 @@ exports.routesConfig = function (app) {
         ChainInfo.pay
     ]);
     app.get('/api/v1/chain_info/bank', [
-        //ValidationMiddleware.validJWTNeeded,
+        ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         ChainInfo.bank
     ]);
-    app.put('/api/v1/chain_info/user_create', [
-        //ValidationMiddleware.validJWTNeeded,
+    app.post('/api/v1/chain_info/user_create', [
+        ValidationMiddleware.validJWTNeeded,
         ChainInfo.userController
     ])
 };
