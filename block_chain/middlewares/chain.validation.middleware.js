@@ -27,7 +27,7 @@ exports.isPasswordAndUserMatch = function (req, res, next) {
             var  hash = c.createHmac('sha256', salt).update(req.body.password).digest('base64');
             if (hash === passwordField[1]) {
                 req.body = {
-                    userId: user[0].id,
+                    : user[0].id,
                     token: user[0].token,
                     name: user[0].uname,
                 };
