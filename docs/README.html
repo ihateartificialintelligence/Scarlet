@@ -1,40 +1,60 @@
-<h1 style="color: #B458B7; text-align: center;">Kazs.Tech - API</h1>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<meta property="og:title" content="og:Kazs.Tech APIs" >
+	<meta property="vk:title" content="vk:Kazs.Tech APIs" >
+	<meta property="twitter:title" content="twitter:Kazs.Tech APIs" >
+
+	<meta property="og:description" content="og:Multi-purpose AI Docs" >
+	<meta property="vk:description" content="vk:Multi-purpose AI Docs" >
+	<meta property="twitter:description" content="twitter:Multi-purpose AI Docs" >
+
+	<meta property="og:image:width" content="1200" >
+	<meta property="og:image:height" content="630" >
+
+<!--
+	<meta property="og:image" content="https://og-tags-tester.netlify.app/images/default.png" >
+	<meta property="vk:image" content="https://og-tags-tester.netlify.app/images/vk.png" >
+	<meta property="twitter:image" content="https://og-tags-tester.netlify.app/images/twitter.png" >
+
+	<meta property="twitter:card" content="summary_large_image">
+-->
+</head>
 <body style="background-color: #100F0F;">
+	<h1 style="color: #B458B7; text-align: center;">Kazs.Tech - API</h1>
+	<p style="color: #afbdba; text-align: center;">This API, <i>still yet to be given a name</i>, is a multi-purpose API targeting the usage of User Databasing and administration, Crypto-Currency, and AI Semantics to prevent written or verbal assualt across various user implementations.</p>
 
-<p style="color: #afbdba; text-align: center;">This API, <i>still yet to be given a name</i>, is a multi-purpose API targeting the usage of User Databasing and administration, Crypto-Currency, and AI Semantics to prevent written or verbal assualt across various user implementations.</p>
-
-<br>
-
-<h2 style="color: #B458B7; text-align: center;"> Before using</h2>
-<ul style="padding-left: 150px;">
-<li style="color: #afbdba">Please make sure that you have:</li>
-<li style="color: #afbdba">Postman installed (<a style="color: #cc6699" href="https://www.postman.com/downloads/">Find here</a>), or equivalent.</li>
-<li style="color: #afbdba">Created a user account throught <code>POST<code> requests</li>
-<li style="color: #afbdba">If you haven't yet, please see <b>API - User Agent</b>
-</li>
-</ul>
-<br>
-
-<h2 style="color: #B458B7; text-align: center;">Allowed API Requests:</h2>
-<ul style="padding-left: 450px;">
-  <li style="color: #afbdba"><code>GET</code>    <code>PUT</code>
-    <li style="color: #afbdba"><code>HEAD</code>    <code>PATCH</code> 
-      <li style="color: #afbdba"><code>POST</code> <span style="color: #afbdba"><code>DELETE</code>
-</span>
-
-</li>
-</li></li></ul>
-<br>
-
-<h2 style="color: #B458B7; text-align: center;">API - Crypto</h2>
-<p style="color: #afbdba; text-align: center;"><code>GET /api/v1/chain_info/lastBlock</code><br> parameters: <code>req.body.chainreq. time | hash | trans | nonce</code></p>
-<br><p style="color: #afbdba; text-align: center;"><code>GET /api/v1/chain_info</code><br> parameters: <code>req.query.limit ? query.page/p>
-<br>
-<h2 style="color: #B458B7; text-align: center;">API - User Agent</h2>
-<p style="color: #afbdba; text-align: center;"><code>POST /api/v1/users</code><br> parameters: <code>req.body.  username, password, email</code></p>
-<br><p style="color: #afbdba; text-align: center;"><code>GET /api/v1/users/:id</code><br> parameters: <code>req.body.id</code></p>
-<br>
-<h2 style="color: #B458B7; text-align: center;">API - AI Semantics</h2>
-<p style="color: red; text-align: center; font-size: 22px;">⚠ Currently AI Semantics is unavailable for public use ⚠</p>
-<br>
+	<br>
+	
+	<h2 style="color: #B458B7; text-align: center;"> Before using</h2>
+	<ul style="padding-left: 150px;">
+		<li style="color: #afbdba">Please make sure that you have:</li>
+		<li style="color: #afbdba">Postman installed (<a style="color: #cc6699" href="https://www.postman.com/downloads/">Find here</a>), or equivalent.</li>
+		<li style="color: #afbdba">Created a user account throught <code>POST<code> requests</li>
+		<li style="color: #afbdba">If you haven't yet, please see <b>API - User Agent</b></li>
+	</ul>
+	<br>
+	
+	<h2 style="color: #B458B7; text-align: center;">Allowed API Requests:</h2>
+	<ul style="padding-left: 450px;">	
+		<li style="color: #afbdba"><code>GET</code>    <code>PUT</code></li>
+		<li style="color: #afbdba"><code>HEAD</code>    <code>PATCH</code> </li>
+		<li style="color: #afbdba"><code>POST</code> <span style="color: #afbdba"><code>DELETE</code></span></li>
+	</ul>
+	<br>
+	
+	<h2 style="color: #B458B7; text-align: center;">API - Crypto</h2>
+	<p style="color: #afbdba; text-align: center;"><code>GET /api/v1/chain_info/lastBlock</code><br> parameters: <code>req.body.chainreq. time | hash | trans | nonce</code></p>
+	<br><p style="color: #afbdba; text-align: center;"><code>GET /api/v1/chain_info</code><br> parameters: <code>req.query.limit ? query.page/p>
+	<br>
+	<h2 style="color: #B458B7; text-align: center;">API - User Agent</h2>
+	<p style="color: #afbdba; text-align: center;"><code>POST /api/v1/users</code><br> parameters: <code>req.body.  username, password, email</code></p>
+	<br><p style="color: #afbdba; text-align: center;"><code>GET /api/v1/users/:id</code><br> parameters: <code>req.body.id</code></p>
+	<br>
+	<h2 style="color: #B458B7; text-align: center;">API - AI Semantics</h2>
+	<p style="color: red; text-align: center; font-size: 22px;">⚠ Currently AI Semantics is unavailable for public use ⚠</p>
+	<br>
 </body>
