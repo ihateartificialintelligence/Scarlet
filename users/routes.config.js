@@ -8,27 +8,27 @@ const ADMIN = config.permissionLevels.ADMIN;
 const USER = config.permissionLevels.NORMAL_USER;
 
 exports.routesConfig = function (app) {
-    app.post('/api/v1/users', [
+    app.post('/users', [
         UsersController.insert
     ]);
-    app.get('/api/v1/users', [
+    app.get('/users', [
         //ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         UsersController.list
     ]);
-    app.get('/api/v1/users/:userId', [
+    app.get('/users/:userId', [
         //ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         //PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
         UsersController.getById
     ]);
-    app.patch('/api/v1/users/:userId', [
+    app.patch('/users/:userId', [
         //ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         //PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
         UsersController.patchById
     ]);
-    app.delete('/api/v1/users/:userId', [
+    app.delete('/users/:userId', [
         //ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(ADMIN),
         UsersController.removeById

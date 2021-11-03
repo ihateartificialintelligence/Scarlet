@@ -5,15 +5,15 @@ var  DEV = config.permissionLevels.ADMIN, USER = config.permissionLevels.NORMAL_
 
 // TODO: (AI) Add return from mock DB
 exports.routesConfig = function (app) {
-    app.post('/api/v1/ai_semantics', [
+    app.post('/ai_semantics', [
         PermissionMiddleware.minimumPermissionLevelRequired(DEV),
         ///UsersController.insert
     ]);
-    app.get('/api/v1/ai_semantics', [
+    app.get('/ai_semantics', [
         PermissionMiddleware.minimumPermissionLevelRequired(USER),
         //UsersController.list
     ]);
-    app.get('/api/v1/ai_semantics/:string', [
+    app.get('/ai_semantics/:string', [
         PermissionMiddleware.minimumPermissionLevelRequired(USER),
         PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
         //UsersController.getById

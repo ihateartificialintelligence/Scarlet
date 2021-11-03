@@ -5,7 +5,7 @@ const UserModel = require('../models/users.model'),
     { Transaction, Block, Wallet, Chain } = require("../../block_chain/models/transaction.model");
 
 exports.docs = (req,res) => {
-    res.sendFile(path.resolve("docs/README.html"));
+    res.sendFile(path.resolve("docs/Docs/index.html"));
 }
 exports.insert = async(req, res) => {
     //const Genesis = new Wallet();
@@ -94,23 +94,23 @@ exports.list = (req, res) => {
     checkUser(req.body.password);
 };
 
-exports.getById = (req, res) => {
-    async function checkUser(password) {
+exports.getById = async (req, res) => {
+    //async function checkUser(req) {
         //... fetch user from a db etc.
-        let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
+        if (!req.body) return res.status(401).send("No request body detected");
+        else
+            await UserModel.find({uuid: req.body.id, token: req.body.token}).then(async(result => {
+                res.send({status: 'ok', message: result});
+            }));
 
-        const match = await bcrypt.compare(password, await user.password);
+        //const match = await bcrypt.compare(password, await user.password);
     
-        if (match) { 
-            UserModel.findById(req.body.id)
-            .then((result) => {
-                res.status(200).send(result);
-            });
-        } else {
-            return res.status(401).send({ message: "Authentication Failed"})
-        }
-    }
-    checkUser(req.body.password);
+        //if (match) { 
+       // } else {
+          //  return res.status(401).send({ message: "Authentication Failed"})
+        //}
+    //}
+   // checkUser(req);
 };
 exports.patchById = (req, res) => {
     async function checkUser(password) {

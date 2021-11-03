@@ -5,7 +5,10 @@ const UserModel = require("../../users/models/users.model"),
 
 
 exports.list = (req, res) => {
-    let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 100;
+    if (!req.body) return res.send({status: 401, message: "No Body request found!"});
+    else if (!req.body.id || !req.body.token || !req.body.password) return res.send({status:401, message: "Body request doesn't meet auth requirements, please check your body request again."});
+    else {
+        let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 100;
     let page = 0;
     if (req.query) {
         if (req.query.page) {
@@ -17,6 +20,7 @@ exports.list = (req, res) => {
         .then((result) => {
             res.status(200).send(result);
         });
+    }
 };
 
 exports.findLastBlock = (req, res) => {

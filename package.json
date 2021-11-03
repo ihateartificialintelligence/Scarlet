@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "module": "true",
   "doc": "jsdoc -d docs --configure jsconf.json main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,9 +13,11 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "brain.js": "^2.0.0-beta.4",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-markdown-reloaded": "^0.2.4",
+    "fastify": "^3.22.1",
     "highlight.js": "^11.3.1",
     "jsonwebtoken": "^8.5.1",
     "marked": "^2.1.3",

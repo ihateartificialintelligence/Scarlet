@@ -1,5 +1,4 @@
 const config = require('./common/config/env.config.js');
-const path = require("node:path")
 const express = require('express');
 const app = express();
 const marked = require("marked");
@@ -26,7 +25,7 @@ app.use(function (req, res, next) {
         return next();
     }
 });
-app.get('/api/v1/docs', (req, res) => res.sendFile(__dirname, "/docs/README.md"));
+app.get('/docs', (req, res) => res.sendFile(__dirname, "/docs/Docs/index.html"));
 
 AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
