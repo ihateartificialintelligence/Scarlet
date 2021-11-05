@@ -2609,4 +2609,4 @@ class Sentimood {
 
 };
 
-module.exports = Object.define(Sentimood);
+module.exports = Object.assign(Sentimood);

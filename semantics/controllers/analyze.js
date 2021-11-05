@@ -47,7 +47,7 @@ function analyze(input) {
     }
 }
 
-module.exports = Object.define(analyze);
+module.exports = Object.assign(analyze);
 /**
  * if(analysis.score >= 4) {
         modScore = '<span class="strongpos"> Score: ' + analysis.score + String.fromCodePoint(0x1F603) + '</span> ';
