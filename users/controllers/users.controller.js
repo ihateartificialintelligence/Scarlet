@@ -70,6 +70,7 @@ exports.insert = async(req, res) => {
 };
 
 exports.list = (req, res) => {
+    if (!req.body) return res.status(401).send({message: "No body request detected"})
     async function checkUser(password) {
         //... fetch user from a db etc.
         let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
