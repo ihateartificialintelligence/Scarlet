@@ -4,6 +4,8 @@ const UserModel = require("../../users/models/users.model"),
     { Transaction, Block, Wallet, Chain } = require("../models/transaction.model");
 
 
+
+
 exports.list = (req, res) => {
     if (!req.body) return res.send({status: 401, message: "No Body request found!"});
     else if (!req.body.id || !req.body.token || !req.body.password) return res.send({status:401, message: "Body request doesn't meet auth requirements, please check your body request again."});
@@ -23,6 +25,12 @@ exports.list = (req, res) => {
     }
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.findLastBlock = (req, res) => {
     switch (req) {
         case req.body.chainreq === "time": return res.send({status: 200, body: {

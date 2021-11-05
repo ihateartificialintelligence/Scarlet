@@ -29,7 +29,7 @@ app.get('/docs', (req, res) => res.sendFile(__dirname, "/docs/Docs/index.html"))
 
 AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
-//SemanticsRouter.routesConfig(app);
+SemanticsRouter.routesConfig(app);
 ChainRouter.routesConfig(app);
 
 app.listen((process.env.PORT || config.port), "0.0.0.0", function () {
