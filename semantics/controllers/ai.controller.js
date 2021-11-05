@@ -1,5 +1,14 @@
 const ai = require("./analyze");
 const checktoken = require("./checktoken");
+
+/**
+ * 
+ * @param {*} req API request
+ * @param {*} res API response
+ * @param {*} next 
+ * @returns true | false
+ * @example req.body: { aitk: "ai.example-tok_en"}
+ */
 exports.analyze = (req, res, next) => {
     if (!req.body) return res.send({status: 401, message:"no body request found"});
     else if (!req.body.aitk) return res.send({status: 401, message:"No AI Token found"});

@@ -53,7 +53,7 @@ exports.insert = async(req, res) => {
                     privateKey: new Wallet().privateKey, 
                     publicKey: new Wallet().publicKey, 
                 }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
-                return res.status(200).send(`Successfully created the user\n ${await user}\nPlease don't forget your password! ${password}`)
+                return res.status(200).send(`Successfully created the user\n ${await user.uuid}\n${await user.username}\n ${await user.token}\nPlease don't forget your password! ${password}`)
             })
         })
     } else if (req.method === "DELETE") {
