@@ -1,28 +1,22 @@
 const UserModel = require("../../users/models/users.model"),
-    //{ Chain } = require("../models/chain.model.js"),
-    Miner = require("../models/transaction.model"),
-    { Transaction, Block, Wallet, Chain } = require("../models/transaction.model");
+    bcrypt = require('bcrypt'),
+    { Chain } = require("../models/transaction.model");
 
+exports.list = async (req, res) => {
+    if (!req.body) return syslog.info(`Client tried to gain access to the API, without a body request`), res.status(401).send("No request body detected");
+    async function checkUser(password) {
+       //... fetch user from a db etc.
+        let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
 
-
-
-exports.list = (req, res) => {
-    if (!req.body) return res.send({status: 401, message: "No Body request found!"});
-    else if (!req.body.id || !req.body.token || !req.body.password) return res.send({status:401, message: "Body request doesn't meet auth requirements, please check your body request again."});
-    else {
-        let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 100;
-    let page = 0;
-    if (req.query) {
-        if (req.query.page) {
-            req.query.page = parseInt(req.query.page);
-            page = Number.isSafeInteger(req.query.page) ? req.query.page : 0;
+        const match = await bcrypt.compare(password, await user[0].password);
+        if (match) { 
+            let list = Chain.instance.chain;
+            res.status(200).send(list);
+        } else {
+            return res.status(401).send({ message: "Authentication Failed"})
         }
     }
-    UserModel.list(limit, page)
-        .then((result) => {
-            res.status(200).send(result);
-        });
-    }
+    checkUser(req.body.password);
 };
 
 /**
@@ -104,69 +98,24 @@ exports.bank = (req, res) => {
     }
 };
 
-exports.mine = (req, res) => {
-    if (req.method == 'GET' && UserModel.find({uuid: req.body.id, token: req.body.token}) == true) {
-        let usrWallet  = UserModel.find(req.body.id)
-        if (usrWallet) {
-            let amount = new Chain().mine() / 5;
-            if (amount <= 0) amount += Math.floor(Math.max(500), Math.random());
-            usrWallet.uWallet += amount;
-            usrWallet.save().catch(e => console.log(e));
-        } else return res.send({status: 404, message: "Unknown User to add data to."});
-    }
-}
+exports.mine = async (req, res) => {
+    if (!req.body) return syslog.info(`Client tried to gain access to the API, without a body request`), res.status(401).send("No request body detected");
+    async function checkUser(password) {
+        //... fetch user from a db etc.
+        let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
 
-exports.userController = (req, res) => {
-    const Genesis = new Wallet();
-    function makeid(length) {
-        let result = '';
-        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let charactersLength = characters.length;
-        for ( let i = 0; i < length; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        const match = await bcrypt.compare(password, await user[0].password);
+        if (match) { 
+            let usrWallet  = UserModel.find(req.body.id)
+            if (usrWallet) {
+                let amount = new Chain().mine() / 5;
+                if (amount <= 0) amount += Math.floor(Math.max(500), Math.random());
+                usrWallet.uWallet += amount;
+                usrWallet.save().catch(e => console.log(e));
+            } else return res.send({status: 404, message: "Unknown User to add data to."});
+        } else {
+            return res.status(401).send({ message: "Authentication Failed"})
         }
-        return result;
     }
-    /**
-     * /chain_info/account/
-     * Create or Delete user accounts from the database
-     * 
-     * (req.body)
-     *  - Email
-     *  - Password
-     *  - Username
-     * 
-     * 
-     *  - Reason - Optional
-     * 
-     * (req.method)
-     *  - DELETE - Delete user account from DB
-     *  - POST/PUT - Create user account and update DB
-     */
-    if (req.method === ("POST")) {
-        const username = req.body.username,
-            password = req.body.password;
-        
-        UserModel.createUser({
-            uuid: Math.floor(Math.random()*999999999999),
-            username: username, 
-            email: req.body.email,
-            password: password, 
-            permissionLevel: 1,
-            token: `u.${makeid(12)}_${makeid(8)}`, 
-            uWallet: new Wallet().send(5, Genesis.publicKey), 
-            privateKey: new Wallet().privateKey, 
-            publicKey: new Wallet().publicKey, 
-        })
-
-    } else if (req.method === "DELETE") {
-        const user = UserModel.find({ 
-            id: req.body.id,
-            token: req.body.token,
-            reason: req.body.reason,
-        });
-        UserModel.removeById(user.id);
-    } else {
-        return res.status(404).send({ message: "Invalid method. Please use POST/PUT or DELETE methods." });
-    }
-}
+    checkUser(req.body.password);
+};

@@ -1,13 +1,12 @@
 const UserModel = require('../models/users.model'),
     bcrypt = require('bcrypt'),
     { Wallet } = require("../../block_chain/models/transaction.model"),
-    { syslog } = require("../../logs/logger");
+    { syslog, userlog } = require("../../logs/logger");
 
 exports.docs = (req,res) => {
     res.redirect("https://docs.scarletai.xyz");
 }
 exports.insert = async(req, res) => {
-    console.log(Object.keys(req.client))
     function makeid(length) {
         let result = '';
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -48,65 +47,66 @@ exports.insert = async(req, res) => {
     }}
 };
 
-exports.list = (req, res) => {
+exports.list = async (req, res) => {
     if (!req.body) return res.status(401).send({message: "No body request detected"})
     async function checkUser(password) {
         //... fetch user from a db etc.
         let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
-
-        const match = await bcrypt.compare(password, await user.password);
-    
-        if(match) {
-            let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
-            let page = 0;
-            if (req.query) {
-                if (req.query.page) {
-                    req.query.page = parseInt(req.query.page);
-                    page = Number.isInteger(req.query.page) ? req.query.page : 0;
-                }
+        await bcrypt.compare(req.body.password, user[0].password, (e, valid) => {
+            if (e) {
+                res.send({status: 401, message: "unauthorized access"});
+                syslog.info(e);
             }
-            UserModel.list(limit, page)
-                .then((result) => {
-                    res.status(200).send(result);
-                })
-        } else {
-            syslog.error(`Client tried to gain unauthorized access to the API`)
-            return res.status(401).send({ message: "Authorization Failed" });
-        }
+            if (valid) {
+                let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
+                let page = 0;
+                if (req.query) {
+                    if (req.query.page) {
+                        req.query.page = parseInt(req.query.page);
+                        page = Number.isInteger(req.query.page) ? req.query.page : 0;
+                    }
+                }
+                UserModel.list(limit, page)
+                    .then((result) => {
+                        res.status(200).send(`${result.uuid}\n${result.username}\n${result.password}\n${result.token}\n${result.permissionLevel}`);
+                        userlog.info(
+                            "User has gained access to: " + result
+                        )
+                    })
+            }
+        });
     }
     checkUser(req.body.password);
 };
 
 exports.getById = async (req, res) => {
     //async function checkUser(req) {
-        //... fetch user from a db etc.
-        if (!req.body) return syslog.error(`Client tried to gain access to the API, without a body request`), res.status(401).send("No request body detected");
-        else
-            await UserModel.find({uuid: req.body.id, token: req.body.token}).then(async(result => {
-                syslog.log(`Client retrieved UserID from API`)
-                return res.send({status: 'ok', message: result});
-            }));
+    //... fetch user from a db etc.
+    if (!req.body) return syslog.info(`Client tried to gain access to the API, without a body request`), res.status(401).send("No request body detected");
 
-        //const match = await bcrypt.compare(password, await user.password);
-    
-        //if (match) { 
-       // } else {
-          //  return res.status(401).send({ message: "Authentication Failed"})
-        //}
-    //}
-   // checkUser(req);
+    const match = await bcrypt.compare(password, await user[0].password);
+
+    if (match) { 
+        await UserModel.find({uuid: req.body.id, token: req.body.token}).then(async(result => {
+            syslog.log(`Client retrieved UserID from API`)
+            return res.send({status: 'ok', message: `${result.uuid}\n${result.username}\n${result.password}\n${result.token}\n${result.permissionLevel}`});
+        }));
+    } else {
+        return res.status(401).send({ message: "Authentication Failed"})
+    }
+    checkUser(req);
 };
 exports.patchById = (req, res) => {
     async function checkUser(password) {
         //... fetch user from a db etc.
         let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
 
-        const match = await bcrypt.compare(password, await user.password);
+        const match = await bcrypt.compare(password, await user[0].password);
     
         if (match){
             UserModel.patchUser(req.body.id, req.body)
                 .then((result) => {
-                    res.status(204).send(`Successfully patched user\n ${result}`);
+                    res.status(204).send(`Successfully patched user\n ${result.uuid}\n${result.username}\n${result.password}\n${result.token}\n${result.permissionLevel}`);
                 });
         } else {
             syslog.error(`Client tried to gain unauthorized access to the API`)
@@ -121,12 +121,12 @@ exports.removeById = (req, res) => {
         //... fetch user from a db etc.
         let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
 
-        const match = await bcrypt.compare(password, await user.password);
+        const match = await bcrypt.compare(password, await user[0].password);
     
         if (match){
             UserModel.removeById(req.body.id)
             .then((result)=>{
-                res.status(204).send(`Account removed successfully\n ${result}`);
+                res.status(204).send(`Account removed successfully\n ${result.uuid}\n${result.username}\n${result.password}\n${result.token}\n${result.permissionLevel}`);
             });
         } else {
             syslog.error(`Client tried to gain unauthorized access to the API`)
