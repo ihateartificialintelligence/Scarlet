@@ -36,7 +36,7 @@ function analyze(input) {
                 for (contents[i] in range(-5, -4)) {
                     return analysis.score;
                 }
-            } else if (analysis.positive.words.indexof(contents[i]) === -1) {
+            } else if (analysis.positive.words.indexOf(contents[i]) === -1) {
                 modText += contents[i];
                 for (contents[i] in range(0, 5)) {
                     return analysis.score;
