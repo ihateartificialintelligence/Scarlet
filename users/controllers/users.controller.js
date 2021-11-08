@@ -1,72 +1,51 @@
 const UserModel = require('../models/users.model'),
-    crypto = require('crypto'),
     bcrypt = require('bcrypt'),
-    path=require('path'),
-    { Transaction, Block, Wallet, Chain } = require("../../block_chain/models/transaction.model");
+    { Wallet } = require("../../block_chain/models/transaction.model"),
+    { syslog } = require("../../logs/logger");
 
 exports.docs = (req,res) => {
-    res.sendFile(path.resolve("docs/Docs/index.html"));
+    res.redirect("https://docs.scarletai.xyz");
 }
 exports.insert = async(req, res) => {
-    //const Genesis = new Wallet();
+    console.log(Object.keys(req.client))
     function makeid(length) {
-        var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
+        let result = '';
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
           result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-        //return res.send({ status: 200, message:result});
+        } return result;
     }
-    /**
-     * /users
-     * Create or Delete user accounts from the database
-     * 
-     * (req.body)
-     *  - UUID  - cross ref the user
-     *  - Token -  to verify the request
-     *  - Reason - Optional
-     * 
-     * (req.method)
-     *  - DELETE - Delete user account from DB
-     *  - POST/PUT - Create user account and update DB
-     */
-    if (req.method === ("POST")) {
-        let username = req.body.username,
-            password = req.body.password;
-            const bcrypt = require("bcrypt"),
-            saltRounds = 15;
-
+    const bcrypt = require("bcrypt"),
+    saltRounds = 15;
+    if (!req.body) {
+        res.send({status: 401, message: 'Invalid request. No Body'});
+        syslog.info("Invalid request, No Body found for: " + req.client)
+    } else {
+    try {
         bcrypt.genSalt(saltRounds, async (e, salt) => {
-            bcrypt.hash(password, salt, async (e, hash) => {
+            bcrypt.hash(req.body.password, salt, async (e, hash) => {
                 if (e) return res.send({status: 501, message:"Create Failure"}), console.log(e);
 
                 let user = await UserModel.createUser({
                     uuid: Math.floor(Math.random()*999999999999),
-                    username: username, 
+                    username: req.body.username, 
                     email: req.body.email,
-                    password: hash, 
+                    password: await hash, 
                     permissionLevel: 1,
                     token: `u.${makeid(43)}_${makeid(28)}`, 
                     uWallet: new Wallet(),
                     privateKey: new Wallet().privateKey, 
                     publicKey: new Wallet().publicKey, 
                 }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
-                return res.status(200).send(`Successfully created the user\n ${await user.uuid}\n${await user.username}\n ${await user.token}\nPlease don't forget your password! ${password}`)
+                syslog.info(`Successfully Created a User`)
+                return await res.status(200).send(`Successfully created the user\n ${await user.uuid}\n${await user.username}\n ${await user.token}\nPlease don't forget your password! ${req.body.password}`)
             })
-        })
-    } else if (req.method === "DELETE") {
-        const user = UserModel.find({ 
-            id: req.body.id,
-            token: req.body.token,
-            reason: req.body.reason,
         });
-        UserModel.removeById(user.id);
-        return res.status(200).send("Successfully deleted user account");
-    } else {
-        return res.status(401).send({ message: "Invalid method. Please use POST/PUT or DELETE methods." });
-    }
+    } catch (err) {
+        syslog.info(err);
+        return await res.status(500).send({ message: err.message });
+    }}
 };
 
 exports.list = (req, res) => {
@@ -90,7 +69,10 @@ exports.list = (req, res) => {
                 .then((result) => {
                     res.status(200).send(result);
                 })
-        } else res.status(401).send({ message: "Authorization Failed" });
+        } else {
+            syslog.error(`Client tried to gain unauthorized access to the API`)
+            return res.status(401).send({ message: "Authorization Failed" });
+        }
     }
     checkUser(req.body.password);
 };
@@ -98,10 +80,11 @@ exports.list = (req, res) => {
 exports.getById = async (req, res) => {
     //async function checkUser(req) {
         //... fetch user from a db etc.
-        if (!req.body) return res.status(401).send("No request body detected");
+        if (!req.body) return syslog.error(`Client tried to gain access to the API, without a body request`), res.status(401).send("No request body detected");
         else
             await UserModel.find({uuid: req.body.id, token: req.body.token}).then(async(result => {
-                res.send({status: 'ok', message: result});
+                syslog.log(`Client retrieved UserID from API`)
+                return res.send({status: 'ok', message: result});
             }));
 
         //const match = await bcrypt.compare(password, await user.password);
@@ -125,7 +108,10 @@ exports.patchById = (req, res) => {
                 .then((result) => {
                     res.status(204).send(`Successfully patched user\n ${result}`);
                 });
-        } else res.status(401).send({ message: "Authorization Failed" });
+        } else {
+            syslog.error(`Client tried to gain unauthorized access to the API`)
+            return res.status(401).send({ message: "Authorization Failed" });
+        }
     }
     checkUser(req.body.password);
 };
@@ -142,7 +128,10 @@ exports.removeById = (req, res) => {
             .then((result)=>{
                 res.status(204).send(`Account removed successfully\n ${result}`);
             });
-        } else res.status(401).send({ message: "Authorization Failed" });
+        } else {
+            syslog.error(`Client tried to gain unauthorized access to the API`)
+            return res.status(401).send({ message: "Authorization Failed" });
+        }
     }
     checkUser(req.body.password);
 };

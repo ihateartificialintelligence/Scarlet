@@ -1,9 +1,9 @@
-var  PermissionMiddleware = require('../common/middlewares/auth.permission.middleware');
-var  ValidationMiddleware = require('../common/middlewares/auth.validation.middleware');
-var  config = require("../common/config/env.config");
-var  ChainInfo = require("./controllers/chain.controller");
+let  PermissionMiddleware = require('../common/middlewares/auth.permission.middleware');
+let  ValidationMiddleware = require('../common/middlewares/auth.validation.middleware');
+let  config = require("../common/config/env.config");
+let  ChainInfo = require("./controllers/chain.controller");
 
-var  DEV = config.permissionLevels.ADMIN, USER = config.permissionLevels.NORMAL_USER;
+let  DEV = config.permissionLevels.ADMIN, USER = config.permissionLevels.NORMAL_USER;
 
 // COMPLETED: Add User List to Mock DB - COMPLETED in /users
 exports.routesConfig = function (app) {

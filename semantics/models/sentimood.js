@@ -1,6 +1,6 @@
 const jaro = require("jaro-winkler");
 
-var afinn = {
+let afinn = {
 	"abandon": -2,
 	"abandoned": -2,
 	"abandons": -2,
@@ -2492,9 +2492,9 @@ class Sentimood {
 
 	//Modified for negation handling. - not added to AFINN. checks the next sentimental word.
 	negativity(phrase) {
-		var addPush, hits, i, item, j, len, noPunctuation, tokens, words;
-		var notscore = 0;
-		var nextitem;
+		let addPush, hits, i, item, j, len, noPunctuation, tokens, words;
+		let notscore = 0;
+		let nextitem;
 		addPush = function(t, score) {
 		hits -= score;
 		return words.push(t);
@@ -2543,9 +2543,9 @@ class Sentimood {
 	};
 
 	positivity(phrase) {
-		var addPush, hits, i, item, j, len, noPunctuation, tokens, words;
-		var notscore = 0;
-		var nextitem;
+		let addPush, hits, i, item, j, len, noPunctuation, tokens, words;
+		let notscore = 0;
+		let nextitem;
 		addPush = function(t, score) {
 		hits += score;
 		return words.push(t);
@@ -2594,7 +2594,7 @@ class Sentimood {
 	};
 
 	analyze(phrase) {
-		var neg, pos;
+		let neg, pos;
 		//Modified for Stopwords removal. - stopwordsnone.js required
 		//phrase = remove_stopwords(phrase);
 		pos = Sentimood.prototype.positivity(phrase);

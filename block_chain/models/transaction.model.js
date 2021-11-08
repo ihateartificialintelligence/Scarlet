@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Wallet = exports.Chain = exports.Block = exports.Transaction = void 0;
-var  crypto = require("crypto");
-var  Transaction = (function () {
+let  crypto = require("crypto");
+let  Transaction = (function () {
     function Transaction(amount, payee, payer) {
         this.amount = amount;
         this.payee = payee;
@@ -14,7 +14,7 @@ var  Transaction = (function () {
     return Transaction;
 }());
 exports.Transaction = Transaction;
-var  Block = (function () {
+let  Block = (function () {
     function Block(prevHash, transaction, ts) {
         if (ts === void 0) { ts = Date.now(); }
         this.prevHash = prevHash;
@@ -24,8 +24,8 @@ var  Block = (function () {
     }
     Object.defineProperty(Block.prototype, "hash", {
         get: function () {
-            var str = JSON.stringify(this);
-            var hash = crypto.createHash('SHA256');
+            let str = JSON.stringify(this);
+            let hash = crypto.createHash('SHA256');
             hash.update(str).end();
             return hash.digest('hex');
         },
@@ -35,7 +35,7 @@ var  Block = (function () {
     return Block;
 }());
 exports.Block = Block;
-var  Chain = (function () {
+let  Chain = (function () {
     function Chain() {
         this.chain = [
             new Block('', new Transaction(100, 'genesis', 'exodus')),
@@ -49,7 +49,7 @@ var  Chain = (function () {
         configurable: true
     });
     Chain.prototype.mine = function (nonce) {
-        var  solution = 1;
+        let  solution = 1;
         console.log("Solving for solution");
         const { Worker } = require("worker_threads");
         /**function mine() {
@@ -61,9 +61,9 @@ var  Chain = (function () {
         }
         mine();**/
         while (true) {
-            var hash = crypto.createHash("md5");
+            let hash = crypto.createHash("md5");
             hash.update((nonce + solution).toString()).end();
-            var attempt = hash.digest('hex');
+            let attempt = hash.digest('hex');
             if (attempt.substr(0, 4) === '0000') {
                 console.log("Sovled Solution: " + solution);
                 return solution;
@@ -72,11 +72,11 @@ var  Chain = (function () {
         }
     };
     Chain.prototype.addBlock = function (transaction, pubKey, sig) {
-        var verify = crypto.createVerify('sha256');
+        let verify = crypto.createVerify('sha256');
         verify.update(transaction.toString());
-        var valid = verify.verify(pubKey, sig);
+        let valid = verify.verify(pubKey, sig);
         if (valid) {
-            var newBlock = new Block(this.lastBlock.hash, transaction);
+            let newBlock = new Block(this.lastBlock.hash, transaction);
             this.mine(newBlock.nonce);
             this.chain.push(newBlock);
         }
@@ -85,9 +85,9 @@ var  Chain = (function () {
     return Chain;
 }());
 exports.Chain = Chain;
-var  Wallet = (function () {
+let  Wallet = (function () {
     function Wallet() {
-        var keypair = crypto.generateKeyPairSync('rsa', {
+        let keypair = crypto.generateKeyPairSync('rsa', {
             modulusLength: 2048,
             publicKeyEncoding: { type: 'spki', format: 'pem' },
             privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
@@ -96,10 +96,10 @@ var  Wallet = (function () {
         this.publicKey = keypair.publicKey;
     }
     Wallet.prototype.send = function (amount, payeeKey) {
-        var transaction = new Transaction(amount, this.publicKey, payeeKey);
-        var sign = crypto.createSign('sha256');
+        let transaction = new Transaction(amount, this.publicKey, payeeKey);
+        let sign = crypto.createSign('sha256');
         sign.update(transaction.toString()).end();
-        var sig = sign.sign(this.privateKey);
+        let sig = sign.sign(this.privateKey);
         Chain.instance.addBlock(transaction, this.publicKey, sig);
     };
     return Wallet;

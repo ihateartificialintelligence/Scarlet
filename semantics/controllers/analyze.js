@@ -7,24 +7,23 @@ const Sentimood = require('../models/sentimood');
  * @return {*} 
  */
 function analyze(input) {
-    var input = input;
     if (typeof input !== 'string') throw new Error('Invalid input type. Please convert to a string!');
-    var inputMod = input.toLowerCase().replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
-    var finalWords = [];
-    var flag = 0;
-    var sentimood = Sentimood;
-    var analysis=  sentimood.prototype.analyze(inputMod);
+    let inputMod = input.toLowerCase().replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
+    let finalWords = [];
+    let flag = 0;
+    let sentimood = Sentimood;
+    let analysis=  sentimood.prototype.analyze(inputMod);
     console.log("Score", analysis.score);
     console.log(analysis);
 
     finalWords = analysis.positive.words.concat(analysis.negative.words);
     console.log("Sentimental Words: ", finalWords);
 
-    var contents = inputMod.split(" ");
-    var modText = '';
-    var modScore = '';
+    let contents = inputMod.split(" ");
+    let modText = '';
+    let modScore = '';
 
-    for (var i = 0; i < contents.length; i++) {
+    for (let i = 0; i < contents.length; i++) {
         if (finalWords.indexOf(contents[i]) == -1){
             if (stopWords.indexOf(contents[i]) === -1) {
                 modText += contents[i];
