@@ -18,10 +18,10 @@ exports.analyze = (req, res, next) => {
         if (!content) return res.send({status: 401, message:"No Message Content found"});
         else {
             let eval = ai(content);
-            if (eval <= -1) 
-                return res.send({status: 200, flagged: true, message: "Received message has been flagged as threatening, abusive, and/or insulting!"});
-            if (eval >= 0) 
-                return res.send({status: 200, flagged: false, message: "Received message has been flagged as neutral|Positive!"});
+            if (eval.score <= -1) 
+                return res.send({status: 200, flagged: true,score: eval.score, message: "Received message has been flagged as threatening, abusive, and/or insulting!", words: eval.words});
+            if (eval.score >= 0) 
+                return res.send({status: 200, flagged: false, score: eval.score, message: "Received message has been flagged as neutral|Positive!", words: eval.words});
         }
     }
 }

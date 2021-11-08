@@ -22,7 +22,9 @@ function range(start, stop, step) {
 
     return result;
 };
-
+var flag;
+var modText = '';
+var modScore = '';
 /**
  *
  *
@@ -33,7 +35,6 @@ function analyze(input) {
     if (typeof input !== 'string') throw new Error('Invalid input type. Please convert to a string!');
     let inputMod = input.toLowerCase().replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
     let finalWords = [];
-    let flag = 0;
     let sentimood = Sentimood;
     let analysis=  sentimood.prototype.analyze(inputMod);
     console.log("Score", analysis.score);
@@ -43,27 +44,27 @@ function analyze(input) {
     console.log("Sentimental Words: ", finalWords);
 
     let contents = inputMod.split(" ");
-    let modText = '';
-    let modScore = '';
 
     for (let i = 0; i < contents.length; i++) {
-        if (finalWords.indexOf(contents[i]) == -1){
-            if (stopWords.indexOf(contents[i]) === -1) {
-                modText += contents[i];
-            } else {
-                modText += contents[i];
+        if (analysis.negative.words.indexOf(contents[i]) === -1) {
+            modText += contents[i];
+            for (contents[i] in range(-5, -4)) {
+                flag = 1;
+                return {
+                    score: analysis.score, 
+                    flagged: flag,
+                    words: finalWords
+                };
             }
-        } else {
-            if (analysis.negative.words.indexOf(contents[i]) === -1) {
-                modText += contents[i];
-                for (contents[i] in range(-5, -4)) {
-                    return analysis.score;
-                }
-            } else if (analysis.positive.words.indexOf(contents[i]) === -1) {
-                modText += contents[i];
-                for (contents[i] in range(0, 5)) {
-                    return analysis.score;
-                }
+        } else if (analysis.positive.words.indexOf(contents[i]) === -1) {
+            modText += contents[i];
+            for (contents[i] in range(0, 5)) {
+                flag = 0;
+                return {
+                    score: analysis.score,
+                    flagged: flag,
+                    words: finalWords
+                };
             }
         }
     }
