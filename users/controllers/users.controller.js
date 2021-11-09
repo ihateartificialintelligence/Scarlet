@@ -29,7 +29,7 @@ exports.insert = async(req, res) => {
                 let user = await UserModel.createUser({
                     uuid: Math.floor(Math.random()*999999999999),
                     username: req.body.username, 
-                    email: req.body.email,
+                    //email: req.body.email,
                     password: await hash, 
                     permissionLevel: 1,
                     token: `u.${makeid(43)}_${makeid(28)}`, 

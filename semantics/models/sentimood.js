@@ -1,5 +1,5 @@
 const jaro = require("jaro-winkler");
-
+const analyze = require("../controllers/analyze");
 let afinn = {
 	"abandon": -2,
 	"abandoned": -2,
@@ -2486,42 +2486,28 @@ let afinn = {
 	"shouldn't": 0,
 	"mightn't": 0,
 	"mustn't": 0
-};
-
-class Sentimood {
-
-	//Modified for negation handling. - not added to AFINN. checks the next sentimental word.
-	negativity(phrase) {
-		let addPush, hits, i, item, j, len, noPunctuation, tokens, words;
-		let notscore = 0;
-		let nextitem;
-		addPush = function(t, score) {
-		hits -= score;
-		return words.push(t);
-		};
-		noPunctuation = phrase.replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
-		tokens = noPunctuation.toLowerCase().split(" ");
-		hits = 0;
-		words = [];
-		for (i = j = 0, len = tokens.length; j < len; i = ++j) {
-			item = tokens[i];
-			if (afinn.hasOwnProperty(item)) {
-				if (afinn[item] < 0) {
-				addPush(item, afinn[item]);
-				} else if(afinn[item] == 0) {//Negation Handling added.
-					nextitem = tokens[++j];
-					if(afinn.hasOwnProperty(nextitem)) {
-						if(afinn[nextitem] > 0) {
-							notscore = 2*afinn[nextitem];
-							notscore = ~notscore + 1;
-							addPush(item, notscore);
-						}
-						if(jaro(afinn[nextitem], tokens) >= 0.6) {
-							notscore = 2*afinn[nextitem];
-							notscore = ~notscore + 1;
-							addPush(item, notscore);
-						}
-					} else {
+}
+class Sentimood{
+	
+		//Modified for negation handling. - not added to AFINN. checks the next sentimental word.
+		negativity(phrase) {
+			let addPush, hits, i, item, j, len, noPunctuation, tokens, words;
+			let notscore = 0;
+			let nextitem;
+			addPush = function(t, score) {
+			hits -= score;
+			return words.push(t);
+			};
+			noPunctuation = phrase.replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
+			tokens = noPunctuation.toLowerCase().split(" ");
+			hits = 0;
+			words = [];
+			for (i = j = 0, len = tokens.length; j < len; i = ++j) {
+				item = tokens[i];
+				if (afinn.hasOwnProperty(item)) {
+					if (afinn[item] < 0) {
+					addPush(item, afinn[item]);
+					} else if(afinn[item] == 0) {//Negation Handling added.
 						nextitem = tokens[++j];
 						if(afinn.hasOwnProperty(nextitem)) {
 							if(afinn[nextitem] > 0) {
@@ -2529,45 +2515,50 @@ class Sentimood {
 								notscore = ~notscore + 1;
 								addPush(item, notscore);
 							}
+							if(jaro(afinn[nextitem], tokens) >= 0.6) {
+								notscore = 2*afinn[nextitem];
+								notscore = ~notscore + 1;
+								addPush(item, notscore);
+							}
+						} else {
+							nextitem = tokens[++j];
+							if(afinn.hasOwnProperty(nextitem)) {
+								if(afinn[nextitem] > 0) {
+									notscore = 2*afinn[nextitem];
+									notscore = ~notscore + 1;
+									addPush(item, notscore);
+								}
+							}
 						}
+						--j;
 					}
-					--j;
 				}
 			}
-		}
-		return {
-			score: hits,
-			comparative: hits / words.length,
-			words: words
+			return {
+				score: hits,
+				comparative: hits / words.length,
+				words: words
+			};
 		};
-	};
 
-	positivity(phrase) {
-		let addPush, hits, i, item, j, len, noPunctuation, tokens, words;
-		let notscore = 0;
-		let nextitem;
-		addPush = function(t, score) {
-		hits += score;
-		return words.push(t);
-		};
-		noPunctuation = phrase.replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
-		tokens = noPunctuation.toLowerCase().split(" ");
-		hits = 0;
-		words = [];
-		for (i = j = 0, len = tokens.length; j < len; i = ++j) {
-			item = tokens[i];
-			if (afinn.hasOwnProperty(item)) {
-				if (afinn[item] > 0) {
-				addPush(item, afinn[item]);
-				} else if(afinn[item] == 0) {//Negation Handling added.
-					nextitem = tokens[++j];
-					if(afinn.hasOwnProperty(nextitem)) {
-						if(afinn[nextitem] < 0) {
-							notscore = 2*afinn[nextitem];
-							notscore = ~notscore + 1;
-							addPush(item, notscore);
-						}
-					} else {
+		positivity(phrase) {
+			let addPush, hits, i, item, j, len, noPunctuation, tokens, words;
+			let notscore = 0;
+			let nextitem;
+			addPush = function(t, score) {
+			hits += score;
+			return words.push(t);
+			};
+			noPunctuation = phrase.replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
+			tokens = noPunctuation.toLowerCase().split(" ");
+			hits = 0;
+			words = [];
+			for (i = j = 0, len = tokens.length; j < len; i = ++j) {
+				item = tokens[i];
+				if (afinn.hasOwnProperty(item)) {
+					if (afinn[item] > 0) {
+					addPush(item, afinn[item]);
+					} else if(afinn[item] == 0) {//Negation Handling added.
 						nextitem = tokens[++j];
 						if(afinn.hasOwnProperty(nextitem)) {
 							if(afinn[nextitem] < 0) {
@@ -2575,38 +2566,44 @@ class Sentimood {
 								notscore = ~notscore + 1;
 								addPush(item, notscore);
 							}
+						} else {
+							nextitem = tokens[++j];
+							if(afinn.hasOwnProperty(nextitem)) {
+								if(afinn[nextitem] < 0) {
+									notscore = 2*afinn[nextitem];
+									notscore = ~notscore + 1;
+									addPush(item, notscore);
+								}
+							}
+							if(jaro(afinn[nextitem], tokens) >= 0.6) {
+								notscore = 2*afinn[nextitem];
+								notscore = ~notscore + 1;
+								addPush(item, notscore);
+							}
 						}
-						if(jaro(afinn[nextitem], tokens) >= 0.6) {
-							notscore = 2*afinn[nextitem];
-							notscore = ~notscore + 1;
-							addPush(item, notscore);
-						}
+						--j;
 					}
-					--j;
 				}
 			}
-		}
-		return {
-			score: hits,
-			comparative: hits / words.length,
-			words: words
+			return {
+				score: hits,
+				comparative: hits / words.length,
+				words: words
+			};
 		};
-	};
 
-	analyze(phrase) {
-		let neg, pos;
-		//Modified for Stopwords removal. - stopwordsnone.js required
-		//phrase = remove_stopwords(phrase);
-		pos = Sentimood.prototype.positivity(phrase);
-		neg = Sentimood.prototype.negativity(phrase);
-		return {
-			score: pos.score - neg.score,
-			comparative: pos.comparative - neg.comparative,
-			positive: pos,
-			negative: neg
+		analyze(phrase) {
+			let neg, pos;
+			//Modified for Stopwords removal. - stopwordsnone.js required
+			//phrase = remove_stopwords(phrase);
+			pos = Sentimood.prototype.positivity(phrase);
+			neg = Sentimood.prototype.negativity(phrase);
+			return {
+				score: pos.score - neg.score,
+				comparative: pos.comparative - neg.comparative,
+				positive: pos,
+				negative: neg
+			};
 		};
-	};
-
-};
-
+}
 module.exports = Object.assign(Sentimood);
