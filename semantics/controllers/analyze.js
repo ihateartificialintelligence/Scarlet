@@ -36,10 +36,11 @@ function analyze(input) {
     let inputMod = input.toLowerCase().replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
     let finalWords = [];
     let sentimood = Sentimood;
-    let topics = sentimood.prototype.analyze_sentence(input);
+    let topics = sentimood.prototype.analyze_sentence(inputMod);
     let analysis=  sentimood.prototype.analyze(inputMod);
     console.log("Score", analysis.score);
     console.log(analysis);
+    console.log(topics);
 
     finalWords = analysis.positive.words.concat(analysis.negative.words);
     console.log("Sentimental Words: ", finalWords);
