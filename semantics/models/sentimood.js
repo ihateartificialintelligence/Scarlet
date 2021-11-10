@@ -2486,7 +2486,23 @@ let afinn = {
 	"shouldn't": 0,
 	"mightn't": 0,
 	"mustn't": 0
-}
+};
+
+let contexts = {
+	"neutral": 0,
+	"suicide": -5,
+	"death": -5,
+	"murder": -5,
+	"love": 5,
+	"romance": 5,
+	"joke": 3,
+	"family":3,
+	"friends": 2,
+	"school": 2,
+	"abuse": -3
+	// Add more here?
+};
+
 class Sentimood{
 	
 		//Modified for negation handling. - not added to AFINN. checks the next sentimental word.
@@ -2605,5 +2621,70 @@ class Sentimood{
 				negative: neg
 			};
 		};
+
+		topicAnalyser(phrase) {
+			let addPush, hits, i, item, j, len, noPunctuation, tokens, words;
+			let notscore = 0;
+			let nextitem;
+			let topic;
+			addPush = function(t, score) {
+				hits += score;
+				return words.push(t);
+			};
+
+			noPunctuation = phrase.replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
+			tokens = noPunctuation.toLowerCase().split(" ");
+			hits = 0;
+			words = [];
+
+			for (i = j = 0, len = tokens.length; j < len; i = ++j) {
+				item = tokens[i];
+				if (contexts.hasOwnProperty(item)) {
+					if (afinn[item] > 0) {
+					addPush(item, contexts[item]);
+					} else if(contexts[item] == 0) {//Negation Handling added.
+						nextitem = tokens[++j];
+						if(contexts.hasOwnProperty(nextitem)) {
+							if(contexts[nextitem] < 0) {
+								notscore = 2*contexts[nextitem];
+								notscore = ~notscore + 1;
+								addPush(item, notscore);
+								topic = contexts[nextitem]
+							}
+						} else {
+							nextitem = tokens[++j];
+							if(contexts.hasOwnProperty(nextitem)) {
+								if(contexts[nextitem] < 0) {
+									notscore = 2*contexts[nextitem];
+									notscore = ~notscore + 1;
+									addPush(item, notscore);
+									topic = contexts[nextitem]
+								}
+							}
+							if(jaro(contexts[nextitem], tokens) >= 0.6) {
+								notscore = 2*contexts[nextitem];
+								notscore = ~notscore + 1;
+								addPush(item, notscore);
+							}
+						}
+						--j;
+					}
+				}
+			}
+
+			return {
+				score: hits,
+				topic: topic
+			};
+		}
+
+		analyze_sentence(phrase) {
+			let context;
+			context = this.topicAnalyser(phrase);
+			return {
+				score: context.score,
+				topic: context.topic,
+			};
+		}
 }
 module.exports = Object.assign(Sentimood);
