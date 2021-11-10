@@ -36,6 +36,7 @@ function analyze(input) {
     let inputMod = input.toLowerCase().replace(/[^'a-zA-Z ]+/g, ' ').replace('/ {2,}/', ' ');
     let finalWords = [];
     let sentimood = Sentimood;
+    let topics = sentimood.prototype.analyze_sentence(input);
     let analysis=  sentimood.prototype.analyze(inputMod);
     console.log("Score", analysis.score);
     console.log(analysis);
@@ -53,7 +54,8 @@ function analyze(input) {
                 return {
                     score: analysis.score, 
                     flagged: flag,
-                    words: finalWords
+                    words: finalWords,
+                    topic: topics.topic
                 };
             }
         } else if (analysis.positive.words.indexOf(contents[i]) === -1) {
@@ -63,7 +65,8 @@ function analyze(input) {
                 return {
                     score: analysis.score,
                     flagged: flag,
-                    words: finalWords
+                    words: finalWords,
+                    topic: topics.topic
                 };
             }
         }
