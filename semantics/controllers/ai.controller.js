@@ -19,9 +19,9 @@ exports.analyze = (req, res, next) => {
         else {
             let eval = ai(content);
             if (eval.score <= -1) 
-                return res.send({status: 200, flagged: true,score: eval.score, message: "Received message has been flagged as threatening, abusive, and/or insulting!", words: eval.words});
+                return res.send({status: 200, flagged: true,score: eval.score, message: "Received message has been flagged as threatening, abusive, and/or insulting!", topic: eval.topic, words: eval.words});
             if (eval.score >= 0) 
-                return res.send({status: 200, flagged: false, score: eval.score, message: "Received message has been flagged as neutral|Positive!", words: eval.words});
+                return res.send({status: 200, flagged: false, score: eval.score, message: "Received message has been flagged as neutral|Positive!", topic: eval.topic, words: eval.words});
         }
     }
 }

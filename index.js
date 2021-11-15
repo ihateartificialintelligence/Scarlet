@@ -33,6 +33,14 @@ app.use(function (req, res, next) {
     }
 });
 app.get('/docs', (req, res) => res.redirect("https://docs.scarletai.xyz"));
+var request = require('request');
+
+request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D560418XWV36H2OK9T41ULJ9PG78&ip=68.10.149.45', function (error, response, body) {
+    console.log('Status:', response.statusCode);
+    console.log('Headers:', JSON.stringify(response.headers));
+    console.log('Response:', body);
+});
+
 
 AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
