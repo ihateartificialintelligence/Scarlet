@@ -34,7 +34,6 @@ app.use(function (req, res, next) {
     }
 });
 app.get('/docs', (req, res) => res.redirect("https://docs.scarletai.xyz"));
-var request = require('request');
 
 // Send IP logs to IP Investigator to watch
 // for IPs in event of a (Re[D])DoS
