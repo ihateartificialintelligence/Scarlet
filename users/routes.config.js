@@ -30,6 +30,7 @@ exports.routesConfig = function (app) {
     app.get('/docs', [
         UsersController.docs
     ]);
+    //webhook post path
     app.post("webhooks", (req, res) => {
         const Payload = req.body;
         //Respond To Heroku Webhook
