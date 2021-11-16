@@ -41,8 +41,6 @@ request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D
     console.log('Status:', response.statusCode);
     console.log('Headers:', JSON.stringify(response.headers));
     console.log('Response:', body);
-    if (body.ip in body.blockedlist) return response.sendStatus(401).send("request denied");
-    else return;
 });
 
 // API Webhook handler to log Heroku Updates
