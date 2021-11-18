@@ -33,5 +33,5 @@ exports.routesConfig = function (app) {
     //webhook post path
     app.post("webhooks", [
         WebHook.toDiscord
-    ])
+    ]);
 };
