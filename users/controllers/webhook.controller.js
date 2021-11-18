@@ -1,3 +1,5 @@
+const request = require("request");
+
 exports.toDiscord = (req, res) => {
     const Payload = req.body;
     //Respond To Heroku Webhook
@@ -15,7 +17,7 @@ exports.toDiscord = (req, res) => {
             content: `Hi There!\nA new update has been pushed to my server! \nServer-name: \`${Payload.data.app.name}\`\nUpdate: \`Unkown\`\nVersion: \`${Payload.data.app.version}`
         }),
     };
-    res.send(options, function (error, response) {
+    request(options, function (error, response) {
         if (error) throw new Error(error);
         console.log(response);
     })
