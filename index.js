@@ -9,11 +9,6 @@ const UsersRouter = require('./users/routes.config');
 const SemanticsRouter = require('./semantics/routes.config');
 const ChainRouter = require('./block_chain/routes.config');
 const StartChain = require('./block_chain/models/transaction.model');
-StartChain;
-
-const genesis = new StartChain.Wallet();
-const exodus = new StartChain.Wallet();
-genesis.send(50, exodus.publicKey)
 
 // parse application/x-www-form-urlencoded
 app.use(bp.urlencoded({ extended: false }))
@@ -33,7 +28,6 @@ app.use(function (req, res, next) {
         return next();
     }
 });
-app.get('/docs', (req, res) => res.redirect("https://docs.scarletai.xyz"));
 
 // Send IP logs to IP Investigator to watch
 // for IPs in event of a (Re[D])DoS
