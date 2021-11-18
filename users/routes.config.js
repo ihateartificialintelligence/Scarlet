@@ -48,9 +48,9 @@ exports.routesConfig = function (app) {
                 content: `Hi There!\nA new update has been pushed to my server! \nServer-name: \`${Payload.data.app.name}\`\nUpdate: \`Unkown\`\nVersion: \`${Payload.data.app.version}`
             }),
         };
-        request(options, function (error, response) {
+        res.send(options, function (error, response) {
             if (error) throw new Error(error);
             console.log(response);
-        });
+        })
     })
 };
