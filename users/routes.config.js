@@ -31,7 +31,7 @@ exports.routesConfig = function (app) {
         UsersController.docs
     ]);
     //webhook post path
-    app.post("webhooks", [
+    app.post("/webhooks", [
         WebHook.toDiscord
     ]);
 };
