@@ -61,9 +61,7 @@ exports.toDiscord = (req, res) => {
             "Content-type": "application/json",
         },
         //Format JSON DATA
-        body: JSON.stringify({
-            content: `Hi There!\nA new update has been pushed to my server! \nServer-name: \`${Payload.data.app.name}\`\nUpdate: \`Unkown\`\nVersion: \`${Payload.data.app.version}`
-        })
+        body: embed,
     }).then(response => {
         console.log(response);
     }).catch(err => {
