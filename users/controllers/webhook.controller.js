@@ -55,13 +55,14 @@ exports.toDiscord = (req, res) => {
             ]
         };
 
-    const { post } = require("node-fetch");
-    post("https://discord.com/api/webhooks/909948140436721714/s3E0Z611HJ5w4oY2muWVEIJOGsvwYIZJdHdGvNMo1KMrAoj-yipOLrXd0A8CBN-bHdIU", {
+    const fetch = require("node-fetch");
+    fetch("https://discord.com/api/webhooks/909948140436721714/s3E0Z611HJ5w4oY2muWVEIJOGsvwYIZJdHdGvNMo1KMrAoj-yipOLrXd0A8CBN-bHdIU", {
+        method: "POST",
         headers: {
             "Content-type": "application/json",
         },
         //Format JSON DATA
-        body: embed,
+        body: JSON.stringify(embed),
     }).then(response => {
         console.log(response);
     }).catch(err => {
