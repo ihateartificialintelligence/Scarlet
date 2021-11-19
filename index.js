@@ -44,7 +44,7 @@ request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D
 AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
 SemanticsRouter.routesConfig(app);
-ChainRouter.routesConfig(app);
+//ChainRouter.routesConfig(app);
 
 app.listen((process.env.PORT || config.port), "0.0.0.0", function () {
     syslog.info(`app listening at port ${process.env.PORT || config.port}`);
