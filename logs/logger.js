@@ -3,7 +3,7 @@ const winston = require("winston");
 const logConfigUser = {
     'transports': [
         new winston.transports.File({
-            filename: './UserLogs.log'
+            filename: './logs/UserLogs.log'
         })
     ],
     format: winston.format.combine(
@@ -18,7 +18,7 @@ const logConfigUser = {
 }, logConfigSystem = {
     'transports': [
         new winston.transports.File({
-            filename: "./SystemLogs.log",
+            filename: "./logs/SystemLogs.log",
         }),
     ],
     format: winston.format.combine(
