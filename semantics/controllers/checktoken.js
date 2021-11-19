@@ -12,6 +12,6 @@ module.exports  = function checktoken(string) {
         return Error("No token string found"), false; 
     if (validTokens.findByToken(string) == false)
         return Error("No token found in User Database");
-    if (validTokens.findByToken(string) == true)
+    if (validTokens.findByToken(string) == true || string in validTokens)
         return true;
 };
