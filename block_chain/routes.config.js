@@ -2,7 +2,7 @@ let  ChainInfo = require("./controllers/chain.controller");
 
 // COMPLETED: Add User List to Mock DB - COMPLETED in /users
 exports.routesConfig = function (app) {
-    app.get('/chain_info', [
+    /**app.get('/chain_info', [
         //ValidationMiddleware.validJWTNeeded,
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         ChainInfo.list
@@ -22,4 +22,5 @@ exports.routesConfig = function (app) {
         //PermissionMiddleware.minimumPermissionLevelRequired(USER),
         ChainInfo.bank
     ]);
+    **/
 };

@@ -24,7 +24,7 @@ exports.toDiscord = (req, res) => {
                 "color": 15258703,
                 "fields": [
                     {
-                        "name": `Server-Name - `,
+                        "name": `Server-Name: `,
                         "value": `${Payload.data.app.name}`,
                         "inline": true
                     },
@@ -34,13 +34,13 @@ exports.toDiscord = (req, res) => {
                         "inline": true
                     },
                     {
-                        "name": `Update/Patch Version - `,
+                        "name": `Update/Patch Version: `,
                         "value": `${Payload.data.version}`,
                         "inline": true
                     },
                     {
-                        "name": `Update/Patch Descriptions - `,
-                        "value": `${Payload.data.description}`,
+                        "name": `Update/Patch Descriptions: `,
+                        "value": `${Payload.data.slug.commit_description}`,
                         "inline": true
                     },
                 ],
