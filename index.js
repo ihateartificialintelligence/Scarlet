@@ -4,11 +4,8 @@ const app = express();
 const request = require("request");
 const bp = require("body-parser");
 const  { syslog } = require("./logs/logger");
-const AuthorizationRouter = require('./auth/routes.config');
 const UsersRouter = require('./users/routes.config');
 const SemanticsRouter = require('./semantics/routes.config');
-const ChainRouter = require('./block_chain/routes.config');
-const StartChain = require('./block_chain/models/transaction.model');
 
 // parse application/x-www-form-urlencoded
 app.use(bp.urlencoded({ extended: false }))
@@ -41,7 +38,7 @@ request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D
 // to Discord channel: 909948054961016864 (scarlets-logs)
 
 
-AuthorizationRouter.routesConfig(app);
+//AuthorizationRouter.routesConfig(app);
 UsersRouter.routesConfig(app);
 SemanticsRouter.routesConfig(app);
 //ChainRouter.routesConfig(app);
