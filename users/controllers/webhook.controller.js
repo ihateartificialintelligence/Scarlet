@@ -6,7 +6,7 @@ exports.toDiscord = (req, res) => {
     let embed = {
         "username": "Scarlet~",
         "avatar_url": "https://cdn.discordapp.com/avatars/909948140436721714/8c22ea4906fb11f98b1e07f276e60699.webp",
-        "content": "Hi There!\nA new update has been pushed to my server!",
+        "content": "Hi There!\nA new update has been pushed to my server! \n\nMentions: ||(<@&911053973472043018>)||",
         "embeds": [
             {
                 "author": {
@@ -15,7 +15,7 @@ exports.toDiscord = (req, res) => {
                     "icon_url": "https://cdn.discordapp.com/icons/903394233489190942/01dd72dbe543fdb466aeea04ee5758b4.webp"
                 },
                 "title": "Scarlet Updates!",
-                "url": "https://api.scarletai.xyz/",
+                "url": "https://github.com/KazutoKashima/ScarletAI",
                 "description": "Whoa! Is this a fix or a release? I can't tell *sobs*",
                 "color": 15258703,
                 "fields": [

@@ -34,8 +34,7 @@ request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D
     console.log('Response:', body);
 });
 
-UsersRouter.routesConfig(app);
-SemanticsRouter.routesConfig(app);
+UsersRouter.routesConfig(app),SemanticsRouter.routesConfig(app);
 
 app.listen((process.env.PORT || config.port), "0.0.0.0", function () {
     return syslog.info(`app listening at port ${process.env.PORT || config.port}`) && 
