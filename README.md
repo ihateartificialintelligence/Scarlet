@@ -13,6 +13,11 @@
 
 - Yup that's right! A new feature has been implemented
   - AI anti-abuse
+  
+<h2 id="New-Items" style="text-align:center">Breaking Changes!!</h2>
+
+- The Following Has been removed and/or replaced:
+  - `/chain_info` removed
 
 <h2 id="Usage" style="text-align:center">Usage</h2>
 
@@ -50,17 +55,13 @@ post("https://api.scarletai.xyz/users", {
 - GET:
   - `/users` (GET - Unlike the POST, this will return your credentials)
   - `/docs` (GET - It will send you the link for this)
-  - `/chain_info`
-  - `/chain_info/lastBlock`
-- POST:
-  - `/chain_info/pay/:id/:amount`
 
 <p style="text-align:center">Now, if you just tried that, you'd have gotten a 401, if you received another error, please drop an issue with a description of what you done!<br><br>The cause for the 401 is that those requests were not formed properly! Don't worry that's nothing bad, we simply just need to make another request to the API containing our new details from the <a href="#Usage">example</a><br><br>Now for the next example!</p>
 
 ```js
 // Lets find out why it didn't work!
 /** your requires here **/
-get("https://api.scarletai.xyz/chain_info/lastBlock", {
+get("https://api.scarletai.xyz/scarlet", {
     body: {
         username: "your_username", // to validate the pass and token
         password: "your_password", // extra layer to help against token theft
@@ -77,7 +78,7 @@ get("https://api.scarletai.xyz/chain_info/lastBlock", {
 /** Your requires here **/
 post("https://api.scarletai.xyz/scarlet/", {
   body: {
-    aitk: "your access token",
+    aitk: "your account token",
     content: "the string content of what to check!"
   }
 });
