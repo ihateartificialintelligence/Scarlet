@@ -1,11 +1,7 @@
-const { default: axios } = require("axios");
-const request = require("request");
-
 exports.toDiscord = (req, res) => {
-    const Payload = req.body;
+    const Payload = req.body.data;
     //Respond To Heroku Webhook
     res.sendStatus(200);
-    console.log(Object.keys(Payload));
 
     let embed = {
         "username": "Scarlet~",
@@ -25,22 +21,22 @@ exports.toDiscord = (req, res) => {
                 "fields": [
                     {
                         "name": `Server-Name: `,
-                        "value": `${Payload.data.app.name}`,
+                        "value": `${Payload.app.name}`,
                         "inline": true
                     },
                     {
                         "name": `Server-ID - `,
-                        "value": `${Payload.data.app.id}`,
+                        "value": `${Payload.app.id}`,
                         "inline": true
                     },
                     {
                         "name": `Update/Patch Version: `,
-                        "value": `${Payload.data.version}`,
+                        "value": `${Payload.release.version}`,
                         "inline": true
                     },
                     {
                         "name": `Update/Patch Descriptions: `,
-                        "value": `${Payload.data.slug.commit_description}`,
+                        "value": `${Payload.slug.commit_description}`,
                         "inline": true
                     },
                 ],
@@ -63,10 +59,5 @@ exports.toDiscord = (req, res) => {
         },
         //Format JSON DATA
         body: JSON.stringify(embed),
-    }).then(response => {
-        console.log(response);
-    }).catch(err => {
-        console.log(err);
-        res.status(403).send(err);
-    })
+    });
 };
