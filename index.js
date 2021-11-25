@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
 
 // Send IP logs to IP Investigator to watch
 // for IPs in event of a (Re[D])DoS
-request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D560418XWV36H2OK9T41ULJ9PG78&ip=68.10.149.45', function (error, response, body) {
+request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D560418XWV36H2OK9T41ULJ9PG78', function (error, response, body) {
     console.log('Status:', response.statusCode);
     console.log('Headers:', JSON.stringify(response.headers));
     console.log('Response:', body);
@@ -36,7 +36,7 @@ request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D
 
 UsersRouter.routesConfig(app),SemanticsRouter.routesConfig(app);
 
-app.listen((process.env.PORT || config.port), "0.0.0.0", function () {
-    return syslog.info(`app listening at port ${process.env.PORT || config.port}`) && 
-        console.log(`App listening at port ${process.env.PORT || config.port}`);
+app.listen((config.port||process.env.PORT), "0.0.0.0", function () {
+    return syslog.info(`app listening at port ${config.port||process.env.PORT}`) && 
+        console.log(`App listening at port ${config.port||process.env.PORT}`);
 });

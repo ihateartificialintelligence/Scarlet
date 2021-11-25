@@ -31,7 +31,7 @@ exports.toDiscord = (req, res) => {
                     },
                     {
                         "name": `Update/Patch Version: `,
-                        "value": `${Payload.release.version}`,
+                        "value": `null`,
                         "inline": true
                     },
                     {

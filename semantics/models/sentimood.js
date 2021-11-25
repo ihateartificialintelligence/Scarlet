@@ -1,5 +1,5 @@
 const jaro = require("jaro-winkler");
-const analyze = require("../controllers/analyze");
+//const analyze = require("../controllers/analyze");
 let afinn = {
 	"abandon": -2,
 	"abandoned": -2,

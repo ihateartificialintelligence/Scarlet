@@ -90,3 +90,15 @@ exports.removeById = (userId) => {
         });
     });
 };
+
+exports.removeByToken = (uToken) => {
+    return new Promise((resolve, reject) => {
+        User.deleteMany({token: uToken}, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(err);
+            }
+        });
+    });
+}

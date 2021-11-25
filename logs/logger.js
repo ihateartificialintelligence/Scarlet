@@ -1,9 +1,11 @@
 const winston = require("winston");
 
+// I needed to make a commit lol
+
 const logConfigUser = {
     'transports': [
         new winston.transports.File({
-            filename: './logs/UserLogs.log'
+            filename: './UserLogs.log'
         })
     ],
     format: winston.format.combine(
@@ -18,7 +20,7 @@ const logConfigUser = {
 }, logConfigSystem = {
     'transports': [
         new winston.transports.File({
-            filename: "./logs/SystemLogs.log",
+            filename: "./SystemLogs.log",
         }),
     ],
     format: winston.format.combine(

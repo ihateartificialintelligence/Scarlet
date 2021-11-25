@@ -1,0 +1,14 @@
+{
+    "compound": {
+        "compound_conj": "{clause} {comma} {conjunction} {clause}",
+        "base":"{clause} {comma} {clause}"
+    },
+    "complex": {
+        "base":"{dep_clause} {comma} {indep_clause}",
+        "base_two": "{indep_clause} {comma} {dep_clause}",
+        "comp_complex": "{clause} {comma} {clause} {clause}"
+    },
+    "simple": {
+        "base": "{subject} {verb} {object} {phrase}"
+    }
+}
