@@ -1,7 +1,7 @@
 const config = require('./common/config/env.config.js');
 const express = require('express');
 const app = express();
-const request = require('request');
+// const request = require('request');
 const bp = require('body-parser');
 const {syslog} = require('./logs/logger');
 const UsersRouter = require('./users/routes.config');
@@ -29,11 +29,11 @@ app.use(function(req, res, next) {
 
 // Send IP logs to IP Investigator to watch
 // for IPs in event of a (Re[D])DoS
-request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D560418XWV36H2OK9T41ULJ9PG78', function(error, response, body) {
+/** request('https://ipinvestigator.expeditedaddons.com/?api_key=NZF0IYA5QSCERM37B2D560418XWV36H2OK9T41ULJ9PG78', function(error, response, body) {
   console.log('Status:', response.statusCode);
   console.log('Headers:', JSON.stringify(response.headers));
   console.log('Response:', body);
-});
+}); **/
 
 UsersRouter.routesConfig(app), SemanticsRouter.routesConfig(app);
 

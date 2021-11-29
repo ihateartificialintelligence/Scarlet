@@ -1,3 +1,6 @@
+/* eslint-disable require-jsdoc */
+/* eslint-disable max-len */
+/* eslint-disable prefer-const */
 'use strict';
 Object.defineProperty(exports, '__esModule', {value: true});
 exports.Sentimood = exports.contexts = exports.afinn = void 0;
