@@ -1,21 +1,21 @@
-"use strict";
+'use strict';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator['throw'](value)); } catch (e) { reject(e); } }
         function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
     var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    return g = { next: verb(0), 'throw': verb(1), 'return': verb(2) }, typeof Symbol === 'function' && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
+        if (f) throw new TypeError('Generator is already executing.');
         while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (f = 1, y && (t = op[0] & 2 ? y['return'] : op[0] ? y['throw'] || ((t = y['return']) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
@@ -35,28 +35,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var scarlet_persona_1 = require("./database/scarlet.persona");
+Object.defineProperty(exports, '__esModule', { value: true });
+var scarlet_persona_1 = require('./database/scarlet.persona');
 var user = require('../../../users/models/users.model');
 var Personality = /** @class */ (function () {
     function Personality(name, age, gender) {
         if (!name || !age || !gender)
-            throw new Error("No Name, Age, or Gender has been specified");
-        if (typeof name !== "string")
-            throw new TypeError("Name must be a String");
-        if (typeof age !== "number")
-            throw new TypeError("Age must be a Number");
-        if (typeof gender !== "string")
-            throw new TypeError("Gender must be a String");
+            throw new Error('No Name, Age, or Gender has been specified');
+        if (typeof name !== 'string')
+            throw new TypeError('Name must be a String');
+        if (typeof age !== 'number')
+            throw new TypeError('Age must be a Number');
+        if (typeof gender !== 'string')
+            throw new TypeError('Gender must be a String');
     }
     Personality.delete = function (uid, token) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        //throw new Error("Method not implemented.");
+                        //throw new Error('Method not implemented.');
                         if (!uid)
-                            throw new Error("No UID found!");
+                            throw new Error('No UID found!');
                         return [4 /*yield*/, user.removeByToken(token)];
                     case 1:
                         _a.sent();
@@ -69,11 +69,11 @@ var Personality = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (!gender)
-                    throw new Error("`gender` parameter expected. Instead got `null`");
-                if (typeof gender !== "string")
-                    throw new TypeError("`gender` parameter not a string");
-                if (gender !== ("male" || "female" || "non-binary"))
-                    throw new TypeError("Gender is not a valid gender.");
+                    throw new Error('`gender` parameter expected. Instead got `null`');
+                if (typeof gender !== 'string')
+                    throw new TypeError('`gender` parameter not a string');
+                if (gender !== ('male' || 'female' || 'non-binary'))
+                    throw new TypeError('Gender is not a valid gender.');
                 return [2 /*return*/, gender];
             });
         });
@@ -121,9 +121,9 @@ var Personality = /** @class */ (function () {
                     case 1:
                         name = _b.sent();
                         switch (ptype) {
-                            case ptype = 0: return [2 /*return*/, personaType = "neutral".toLocaleLowerCase()];
-                            case ptype = 1: return [2 /*return*/, personaType = "Introvert".toLocaleLowerCase()];
-                            case ptype = 2: return [2 /*return*/, personaType = "Extrovert".toLocaleLowerCase()];
+                            case ptype = 0: return [2 /*return*/, personaType = 'neutral'.toLocaleLowerCase()];
+                            case ptype = 1: return [2 /*return*/, personaType = 'Introvert'.toLocaleLowerCase()];
+                            case ptype = 2: return [2 /*return*/, personaType = 'Extrovert'.toLocaleLowerCase()];
                         }
                         ;
                         return [4 /*yield*/, scarlet_persona_1.Persona.find({
@@ -144,17 +144,17 @@ var Personality = /** @class */ (function () {
                             })];
                     case 4:
                         newPersona = _b.sent();
-                        return [4 /*yield*/, newPersona.save().catch(function (e) { throw new Error("Error whilst attempting Persona save\n" + e.message); })];
+                        return [4 /*yield*/, newPersona.save().catch(function (e) { throw new Error('Error whilst attempting Persona save\n' + e.message); })];
                     case 5:
                         _b.sent();
-                        _a = "Persona (";
+                        _a = 'Persona (';
                         return [4 /*yield*/, newPersona.name];
-                    case 6: return [2 /*return*/, _a + (_b.sent()) + ") has been created successfully!"];
-                    case 7: throw new Error("Persona (" + name + ") already exists.");
+                    case 6: return [2 /*return*/, _a + (_b.sent()) + ') has been created successfully!'];
+                    case 7: throw new Error('Persona (' + name + ') already exists.');
                     case 8: return [3 /*break*/, 10];
                     case 9:
                         e_1 = _b.sent();
-                        throw new Error("Error creating persona: " + e_1.message);
+                        throw new Error('Error creating persona: ' + e_1.message);
                     case 10: return [2 /*return*/];
                 }
             });

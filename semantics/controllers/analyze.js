@@ -38,14 +38,14 @@ function analyze(input) {
     let sentimood = Sentimood;
     let topics = sentimood.prototype.analyze_sentence(inputMod);
     let analysis=  sentimood.prototype.analyze(inputMod);
-    console.log("Score", analysis.score);
+    console.log('Score', analysis.score);
     console.log(analysis);
     console.log(topics);
 
     finalWords = analysis.positive.words.concat(analysis.negative.words);
-    console.log("Sentimental Words: ", finalWords);
+    console.log('Sentimental Words: ', finalWords);
 
-    let contents = inputMod.split(" ");
+    let contents = inputMod.split(' ');
 
     for (let i = 0; i < contents.length; i++) {
         if (analysis.negative.words.indexOf(contents[i]) === -1) {
@@ -77,13 +77,13 @@ function analyze(input) {
 module.exports = Object.assign(analyze);
 /**
  * if(analysis.score >= 4) {
-        modScore = '<span class="strongpos"> Score: ' + analysis.score + String.fromCodePoint(0x1F603) + '</span> ';
+        modScore = '<span class='strongpos'> Score: ' + analysis.score + String.fromCodePoint(0x1F603) + '</span> ';
     } else if(analysis.score > 0 && analysis.score < 4) {
-        modScore += '<span class="pos"> Score: ' + analysis.score + String.fromCodePoint(0x1F642) + '</span> ';
+        modScore += '<span class='pos'> Score: ' + analysis.score + String.fromCodePoint(0x1F642) + '</span> ';
     } else if(analysis.score < 0 && analysis.score > -4) {
-        modScore += '<span class="neg"> Score: ' + analysis.score + String.fromCodePoint(0x1F641) + '</span> ';
+        modScore += '<span class='neg'> Score: ' + analysis.score + String.fromCodePoint(0x1F641) + '</span> ';
     } else if(analysis.score <= -4) {
-        modScore += '<span class="strongneg"> Score: ' + analysis.score + String.fromCodePoint(0x1F626) + '</span> ';
+        modScore += '<span class='strongneg'> Score: ' + analysis.score + String.fromCodePoint(0x1F626) + '</span> ';
     } else {
         modScore += '<span> Score: ' + analysis.score + String.fromCodePoint(0x1F610) + '</span> ';
     }

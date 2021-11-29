@@ -1,5 +1,5 @@
 const UsersController = require('./controllers/users.controller');
-const WebHook = require("./controllers/webhook.controller");
+const WebHook = require('./controllers/webhook.controller');
 
 exports.routesConfig = function (app) {
     app.post('/users', [
@@ -31,7 +31,7 @@ exports.routesConfig = function (app) {
         UsersController.docs
     ]);
     //webhook post path
-    app.post("/webhooks", [
+    app.post('/webhooks', [
         WebHook.toDiscord
     ]);
 };

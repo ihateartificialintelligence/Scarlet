@@ -1,7 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.analyze = void 0;
-var afinn_data_1 = require("./afinn-data");
+var afinn_data_1 = require('./afinn-data');
 function range(start, stop, step) {
     if (typeof stop == 'undefined') {
         // one param defined
@@ -38,12 +38,12 @@ function analyze(input) {
     var sentimood = afinn_data_1.Sentimood;
     var topics = sentimood.prototype.analyze_sentence(inputMod);
     var analysis = sentimood.prototype.analyze(inputMod);
-    console.log("Score", analysis.score);
+    console.log('Score', analysis.score);
     console.log(analysis);
     console.log(topics);
     finalWords = analysis.positive.words.concat(analysis.negative.words);
-    console.log("Sentimental Words: ", finalWords);
-    var contents = inputMod.split(" ");
+    console.log('Sentimental Words: ', finalWords);
+    var contents = inputMod.split(' ');
     for (var i = 0; i < contents.length; i++) {
         if (analysis.negative.words.indexOf(contents[i]) === -1) {
             modText += contents[i];

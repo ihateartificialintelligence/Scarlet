@@ -1,10 +1,10 @@
 const UserModel = require('../models/users.model'),
     bcrypt = require('bcrypt'),
-    { Wallet } = require("../../block_chain/models/transaction.model"),
-    { syslog, userlog } = require("../../logs/logger");
+    { Wallet } = require('../../block_chain/models/transaction.model'),
+    { syslog, userlog } = require('../../logs/logger');
 
 exports.docs = (req,res) => {
-    res.redirect("https://docs.scarletai.xyz");
+    res.redirect('https://docs.scarletai.xyz');
 }
 exports.insert = async(req, res) => {
     function makeid(length) {
@@ -15,16 +15,16 @@ exports.insert = async(req, res) => {
           result += characters.charAt(Math.floor(Math.random() * charactersLength));
         } return result;
     }
-    const bcrypt = require("bcrypt"),
+    const bcrypt = require('bcrypt'),
     saltRounds = 15;
     if (!req.body) {
         res.send({status: 401, message: 'Invalid request. No Body'});
-        syslog.info("Invalid request, No Body found for: " + req.client)
+        syslog.info('Invalid request, No Body found for: ' + req.client)
     } else {
     try {
         bcrypt.genSalt(saltRounds, async (e, salt) => {
             bcrypt.hash(req.body.password, salt, async (e, hash) => {
-                if (e) return res.send({status: 501, message:"Create Failure"}), console.log(e);
+                if (e) return res.send({status: 501, message:'Create Failure'}), console.log(e);
 
                 let user = await UserModel.createUser({
                     uuid: Math.floor(Math.random()*999999999999),
@@ -36,7 +36,7 @@ exports.insert = async(req, res) => {
                     uWallet: new Wallet(),
                     privateKey: new Wallet().privateKey, 
                     publicKey: new Wallet().publicKey, 
-                }); //user.save().catch(e, () => res.send({status: 501, message: "internal error"}), console.error(e));
+                }); //user.save().catch(e, () => res.send({status: 501, message: 'internal error'}), console.error(e));
                 syslog.info(`Successfully Created a User`)
                 return await res.status(200).send(`Successfully created the user\n ${await user.uuid}\n${await user.username}\n ${await user.token}\nPlease don't forget your password! ${req.body.password}`)
             })
@@ -48,13 +48,13 @@ exports.insert = async(req, res) => {
 };
 
 exports.list = async (req, res) => {
-    if (!req.body) return res.status(401).send({message: "No body request detected"})
+    if (!req.body) return res.status(401).send({message: 'No body request detected'})
     async function checkUser(password) {
         //... fetch user from a db etc.
         let user = await UserModel.find({uuid: req.body.id, token: req.body.token});
         await bcrypt.compare(req.body.password, user[0].password, (e, valid) => {
             if (e) {
-                res.send({status: 401, message: "unauthorized access"});
+                res.send({status: 401, message: 'unauthorized access'});
                 syslog.info(e);
             }
             if (valid) {
@@ -70,7 +70,7 @@ exports.list = async (req, res) => {
                     .then((result) => {
                         res.status(200).send(`${result.uuid}\n${result.username}\n${result.password}\n${result.token}\n${result.permissionLevel}`);
                         userlog.info(
-                            "User has gained access to: " + result
+                            'User has gained access to: ' + result
                         )
                     })
             }
@@ -82,7 +82,7 @@ exports.list = async (req, res) => {
 exports.getById = async (req, res) => {
     //async function checkUser(req) {
     //... fetch user from a db etc.
-    if (!req.body) return syslog.info(`Client tried to gain access to the API, without a body request`), res.status(401).send("No request body detected");
+    if (!req.body) return syslog.info(`Client tried to gain access to the API, without a body request`), res.status(401).send('No request body detected');
 
     const match = await bcrypt.compare(password, await user[0].password);
 
@@ -92,7 +92,7 @@ exports.getById = async (req, res) => {
             return res.send({status: 'ok', message: `${result.uuid}\n${result.username}\n${result.password}\n${result.token}\n${result.permissionLevel}`});
         }));
     } else {
-        return res.status(401).send({ message: "Authentication Failed"})
+        return res.status(401).send({ message: 'Authentication Failed'})
     }
     checkUser(req);
 };
@@ -110,7 +110,7 @@ exports.patchById = (req, res) => {
                 });
         } else {
             syslog.error(`Client tried to gain unauthorized access to the API`)
-            return res.status(401).send({ message: "Authorization Failed" });
+            return res.status(401).send({ message: 'Authorization Failed' });
         }
     }
     checkUser(req.body.password);
@@ -130,7 +130,7 @@ exports.removeById = (req, res) => {
             });
         } else {
             syslog.error(`Client tried to gain unauthorized access to the API`)
-            return res.status(401).send({ message: "Authorization Failed" });
+            return res.status(401).send({ message: 'Authorization Failed' });
         }
     }
     checkUser(req.body.password);

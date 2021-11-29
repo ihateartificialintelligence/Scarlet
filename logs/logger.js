@@ -1,4 +1,4 @@
-const winston = require("winston");
+const winston = require('winston');
 
 // I needed to make a commit lol
 
@@ -20,7 +20,7 @@ const logConfigUser = {
 }, logConfigSystem = {
     'transports': [
         new winston.transports.File({
-            filename: "./SystemLogs.log",
+            filename: './SystemLogs.log',
         }),
     ],
     format: winston.format.combine(

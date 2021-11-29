@@ -1,14 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.Persona = void 0;
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 var ScarletPersona = new mongoose.Schema({
     uid: {
         type: Number,
     },
     name: {
         type: String,
-        default: "Scarlet"
+        default: 'Scarlet'
     },
     age: {
         type: Number,
@@ -16,11 +16,11 @@ var ScarletPersona = new mongoose.Schema({
     },
     gender: {
         type: String,
-        default: "Female"
+        default: 'Female'
     },
     type: {
         type: String,
-        default: "neutral"
+        default: 'neutral'
     }
 });
 exports.Persona = mongoose.model('Personas', ScarletPersona);
