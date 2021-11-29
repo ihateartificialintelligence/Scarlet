@@ -1,7 +1,5 @@
-'use strict';
-Object.defineProperty(exports, '__esModule', {value: true});
-exports.Persona = void 0;
 const mongoose = require('mongoose');
+
 const ScarletPersona = new mongoose.Schema({
   uid: {
     type: Number,
@@ -23,4 +21,5 @@ const ScarletPersona = new mongoose.Schema({
     default: 'neutral',
   },
 });
-exports.Persona = mongoose.model('Personas', ScarletPersona);
+
+export const Persona = mongoose.model('Personas', ScarletPersona);

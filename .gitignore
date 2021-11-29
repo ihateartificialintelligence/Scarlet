@@ -116,4 +116,3 @@ dist
 .pnp.*
 
 # remove the redundant TS files before deploy
-*.ts
