@@ -88,7 +88,7 @@ exports.getById = async (req, res) => {
   // ... fetch user from a db etc.
   if (!req.body) return syslog.info(`Client tried to gain access to the API, without a body request`), res.status(401).send('No request body detected');
 
-  const match = await bcrypt.compare(password, await user[0].password);
+  const match = await bcrypt.compare(req.body.password, await user[0].password);
 
   if (match) {
     await UserModel.find({uuid: req.body.id, token: req.body.token}).then(async((result) => {
