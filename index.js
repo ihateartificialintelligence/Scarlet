@@ -1,4 +1,4 @@
-const config = require('./common/config/env.config.js');
+// const config = require('./common/config/env.config.js');
 const express = require('express');
 const app = express();
 // const request = require('request');
@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
 
 UsersRouter.routesConfig(app), SemanticsRouter.routesConfig(app);
 
-app.listen((config.port||process.env.PORT), '0.0.0.0', function() {
-  return syslog.info(`app listening at port ${config.port||process.env.PORT}`),
-  console.log(`App listening at port ${config.port||process.env.PORT}`);
+app.listen((process.env.PORT), '0.0.0.0', function() {
+  return syslog.info(`app listening at port ${process.env.PORT}`),
+  console.log(`App listening at port ${process.env.PORT}`);
 });
