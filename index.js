@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
 
 UsersRouter.routesConfig(app), SemanticsRouter.routesConfig(app);
 
-app.listen((process.env.PORT), '0.0.0.0', function() {
-  return syslog.info(`app listening at port ${process.env.PORT}`),
-  console.log(`App listening at port ${process.env.PORT}`);
+app.listen((3600), '0.0.0.0', function() {
+  return syslog.info(`app listening at port ${3600}`),
+  console.log(`App listening at port ${3600}`);
 });
