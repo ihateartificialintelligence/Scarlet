@@ -1,4 +1,4 @@
-<h1 style="text-align:center">ScarletAI</h1>
+<h1 style="text-align:center">ScarletAI - Terminated and Not Supported</h1>
 
 <h2 style="text-align:center">Description</h2>
 
