@@ -3,11 +3,8 @@
 const shyArray: string[] = ['...', '-'];
 const ExtroArray: string[] = ['?!', '!!!', '!', '!?!?'];
 const cuteArray: string[] = ['💖', '💗', '~', '<3', '*wink*'];
-import {
-  analyze,
-} from '../src/AFINN';
 import * as fs from 'fs';
-
+const scarletBot = require('../src/AFINN');
 
 /**
  *
@@ -148,81 +145,28 @@ export default class Responses {
       personality ? : string,
   ) {
     if (!personality) personality = 'neutral';
-    let response: string;
     // Generate responses based off AFINN
-    const toBlock: any = new Map();
-    let negCount: number;
-    const analysis = analyze(input || 'test');
+    const analysis = require('../../models/sentimood')(input || 'test');
     if (analysis.topic >= 0) {} else {
       // redirect to help services
     }
 
-    switch (analysis.topic) {
-      case analysis.topic >= 0:
-        // treat the topics as normal
-        if (analysis.score <= -1) {
-          negCount++;
-          toBlock.set(uid, negCount);
-          if (uid in toBlock && negCount > 3) {
-            const blockData: any = [{
-              userId: uid,
-              reason: 'blocked for breaching ToS',
-            }];
-            fs.writeFileSync('./database/block-users.json', blockData, {
-              encoding: 'utf8',
-              mode: 'a+',
-            });
-            return {
-              banned: true,
-              reason: 'User has been persistent on negative count (Bad Words)',
-            };
-          } else {
-            let blkUsr = require('./database/blocked-users.json');
-            blkUsr = JSON.parse(blkUsr);
-            for (let i = 0; i < blkUsr.length; i++) {
-              if (blkUsr[i].userId == uid) {
-                return {
-                  response: 401,
-                  reason: blkUsr[i].reason,
-                  userId: blkUsr[i].userId,
-                };
-              } else {
-                return;
-              }
-            }
-          }
-          response = await this.adjustResponse(uid, input);
-          if (analyze(response).score <= -1) {
-            return (response =
-                            'Sorry but I can\'t \
-                            tolerate such mean behaviour *sigh*'
-            );
-          } else {
-            return (response = 'I can\'t tolerate such rude behaviour *sigh*');
-          }
-        } else if (analysis.score == 0) {
-          response = await this.adjustResponse(uid, input);
-          if (analyze(response).score <= -1) {
-            return (response =
-                            'Sorry but I don\'t think I could find a good response to that *pout*');
-            // TODO: Add ML learning to new responses
-          } else return response;
-        } else if (analysis.score >= 1) {
-          response = await this.adjustResponse(uid, input);
-          if (analyze(response).score <= -1) {
-            return (response =
-                            'Sorry but I don\'t think I could find a good response to that *pout*');
-            // TODO: Add ML learning to new responses
-          } else return response;
-        }
-        break;
-      case analysis.topic == 'suicide':
-        // TODO: Add Redirect to help line based on analysis
-        return {
-          link: 'help-line',
-          phone: 'hotline',
-          reassurance: 'Some reassurance',
-        };
-    }
+    // eslint-disable-next-line padded-blocks
+    // const scarletBot = require('../src/AFINN');
+    scarletBot.start();
+    return say(input);
+  }
+};
+
+/**
+           *
+           *
+           * @param {string} input
+           * @return {*}
+           */
+function say(input: string): any {
+  const reply = scarletBot.reply(input);
+  if (reply == scarletBot.bye()) {
+    return scarletBot.bye();
   }
 }

@@ -1,0 +1,11 @@
+exports.Posts = [
+  'am', 'are',
+  'your', 'my',
+  'me', 'you',
+  'myself', 'yourself',
+  'yourself', 'myself',
+  'i', 'you',
+  'you', 'I',
+  'my', 'your',
+  'i\'m', 'you are',
+];

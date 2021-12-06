@@ -34,4 +34,7 @@ exports.routesConfig = function(app) {
   app.post('/webhooks', [
     WebHook.toDiscord,
   ]);
+  app.get('/', (req, res, next) => {
+    res.redirect('https://github.com/ScarletAI/ScarletAI', 200);
+  });
 };

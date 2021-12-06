@@ -1,8 +1,4 @@
-/* eslint-disable valid-jsdoc */
-/* eslint-disable max-len */
-/* eslint-disable camelcase */
-/* eslint-disable require-jsdoc */
-/* eslint-disable no-invalid-this */
+/* eslint-disable new-cap */
 'use strict';
 const __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
   if (k2 === undefined) k2 = k;
@@ -102,11 +98,19 @@ const __generator = (this && this.__generator) || function(thisArg, body) {
   }
 };
 Object.defineProperty(exports, '__esModule', {value: true});
+/* eslint-disable max-len */
+/* eslint-disable no-multi-str */
 const shyArray = ['...', '-'];
 const ExtroArray = ['?!', '!!!', '!', '!?!?'];
 const cuteArray = ['💖', '💗', '~', '<3', '*wink*'];
-const AFINN_1 = require('../src/AFINN');
 const fs = __importStar(require('fs'));
+const scarletBot = require('../src/AFINN');
+/**
+ *
+ *
+ * @param {string} json
+ * @return {*}
+ */
 function json2array(json) {
   const result = [];
   const keys = Object.keys(json);
@@ -115,7 +119,19 @@ function json2array(json) {
   });
   return result;
 }
+/**
+ *
+ *
+ * @export
+ * @class Responses
+ */
 const Responses = /** @class */ (function() {
+  /**
+     * Creates an instance of Responses.
+     * @param {*} [scarlet]
+     * @param {string} [persona]
+     * @memberof Responses
+     */
   function Responses(scarlet, persona) {
     if (!scarlet || !persona) {
       throw new Error('No Scarlet Classifier, or Persona has been specified');
@@ -125,13 +141,13 @@ const Responses = /** @class */ (function() {
     }
   }
   /**
-     *
-     *
-     * @static
-     * @param {String} string
-     * @return {String}
-     * @memberof Responses
-     */
+       *
+       *
+       * @static
+       * @param {String} string
+       * @return {String}
+       * @memberof Responses
+       */
   Responses.getInput = function(string) {
     return __awaiter(this, void 0, void 0, function() {
       return __generator(this, function(_a) {
@@ -143,14 +159,15 @@ const Responses = /** @class */ (function() {
     });
   };
   /**
-     * TODO: build off generated words and input - Creates appropriate response
-     * Follow: https://academicguides.waldenu.edu/writingcenter/grammar/sentencestructure
-     * @static
-     * @param {*} response
-     * @param {String} personality
-     * @return {*}
-     * @memberof Responses
-     */
+       * TODO: build off generated words and input - Creates appropriate response
+       * Follow: https://academicguides.waldenu.edu/writingcenter/grammar/sentencestructure
+       * @static
+       * @param {Number} uid
+       * @param {*} response
+       * @param {String} personality
+       * @return {*}
+       * @memberof Responses
+       */
   Responses.adjustResponse = function(uid, response, personality) {
     return __awaiter(this, void 0, void 0, function() {
       let e_1; let newResponse; let idata; let iafinn; let edata; let eafinn; let ndata; let nafinn; let cdata; let cafinn;
@@ -221,115 +238,47 @@ const Responses = /** @class */ (function() {
     });
   };
   /**
-     * COMPLETED: Added a generator to come up with suitable responses
-     *
-     * @static
-     * @param {string} [input]
-     * @param {string} [personality]
-     * @return {*}
-     * @memberof Responses
-     */
+       * COMPLETED: Added a generator to come up with suitable responses
+       *
+       * @static
+       * @param {Number} uid
+       * @param {string} [input]
+       * @param {string} [personality]
+       * @return {*}
+       * @memberof Responses
+       */
   Responses.generateResponse = function(uid, input, personality) {
     return __awaiter(this, void 0, void 0, function() {
-      let response; let toBlock; let negCount; let analysis; let _a; let blockData; let blkUsr; let i;
-      return __generator(this, function(_b) {
-        switch (_b.label) {
-          case 0:
-            if (!personality) {
-              personality = 'neutral';
-            }
-            toBlock = new Map();
-            analysis = (0, AFINN_1.analyze)(input || 'test');
-            if (analysis.topic >= 0) { } else {
-              // redirect to help services
-            }
-            _a = analysis.topic;
-            switch (_a) {
-              case analysis.topic >= 0: return [3 /* break*/, 1];
-              case analysis.topic == 'suicide': return [3 /* break*/, 8];
-            }
-            return [3 /* break*/, 9];
-          case 1:
-            if (!(analysis.score <= -1)) return [3 /* break*/, 3];
-            negCount++;
-            toBlock.set(uid, negCount);
-            if (uid in toBlock && negCount > 3) {
-              blockData = [{
-                userId: uid,
-                reason: 'blocked for breaching ToS',
-              }];
-              fs.writeFileSync('./database/block-users.json', blockData, {
-                encoding: 'utf8',
-                mode: 'a+',
-              });
-              return [2 /* return*/, {
-                banned: true,
-                reason: 'User has been persistent on negative count (Bad Words)',
-              }];
-            } else {
-              blkUsr = require('./database/blocked-users.json');
-              blkUsr = JSON.parse(blkUsr);
-              for (i = 0; i < blkUsr.length; i++) {
-                if (blkUsr[i].userId == uid) {
-                  return [2 /* return*/, {
-                    response: 401,
-                    reason: blkUsr[i].reason,
-                    userId: blkUsr[i].userId,
-                  }];
-                } else {
-                  return [2];
-                }
-              }
-            }
-            return [4 /* yield*/, this.adjustResponse(uid, input)];
-          case 2:
-            response = _b.sent();
-            if ((0, AFINN_1.analyze)(response).score <= -1) {
-              return [2 /* return*/, (response =
-                                    'Sorry but I can\'t tolerate such mean behaviour *sigh*')];
-            } else {
-              return [2 /* return*/, (response = 'I can\'t tolerate such rude behaviour *sigh*')];
-            }
-            return [3 /* break*/, 7];
-          case 3:
-            if (!(analysis.score == 0)) return [3 /* break*/, 5];
-            return [4 /* yield*/, this.adjustResponse(uid, input)];
-          case 4:
-            response = _b.sent();
-            if ((0, AFINN_1.analyze)(response).score <= -1) {
-              return [2 /* return*/, (response =
-                                    'Sorry but I don\'t think I could find a good response to that *pout*')];
-              // TODO: Add ML learning to new responses
-            } else {
-              return [2 /* return*/, response];
-            }
-            return [3 /* break*/, 7];
-          case 5:
-            if (!(analysis.score >= 1)) return [3 /* break*/, 7];
-            return [4 /* yield*/, this.adjustResponse(uid, input)];
-          case 6:
-            response = _b.sent();
-            if ((0, AFINN_1.analyze)(response).score <= -1) {
-              return [2 /* return*/, (response =
-                                    'Sorry but I don\'t think I could find a good response to that *pout*')];
-              // TODO: Add ML learning to new responses
-            } else {
-              return [2 /* return*/, response];
-            }
-            _b.label = 7;
-          case 7: return [3 /* break*/, 9];
-          case 8:
-            // TODO: Add Redirect to help line based on analysis
-            return [2 /* return*/, {
-              link: 'help-line',
-              phone: 'hotline',
-              reassurance: 'Some reassurance',
-            }];
-          case 9: return [2];
+      let analysis;
+      return __generator(this, function(_a) {
+        if (!personality) {
+          personality = 'neutral';
         }
+        analysis = require('../../models/sentimood');
+        analysis = new analysis(input || 'test');
+        if (analysis.topic >= 0) { } else {
+          // redirect to help services
+        }
+        // eslint-disable-next-line padded-blocks
+        // const scarletBot = require('../src/AFINN');
+        scarletBot.start();
+        return [2 /* return*/, say(input)];
       });
     });
   };
   return Responses;
 }());
 exports.default = Responses;
+;
+/**
+           *
+           *
+           * @param {string} input
+           * @return {*}
+           */
+function say(input) {
+  const reply = scarletBot.reply(input);
+  if (reply == scarletBot.bye()) {
+    return scarletBot.bye();
+  }
+}

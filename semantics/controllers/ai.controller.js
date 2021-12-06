@@ -46,14 +46,19 @@ exports.createScarlet = async (req, res, next) => {
 };
 
 exports.talkToScarlet = async (req, res) => {
+  console.log('Received Query For `/scarlet/talk`');
   if (!req.body) return res.send({status: 401, message: 'no body request found'});
   else if (!req.body.token) return res.send({status: 401, message: 'No AI Token found'});
   if (checktoken(req.body.token) == false) return res.send({status: 401, message: 'AI Token is not valid, please request a new token'});
   else {
     const content = req.body.content;
+    console.log('Payload: ' + content);
     if (!content) return res.send({status: 401, message: 'No Message Content found'});
     else {
-      await Scarlet.prototype.getResponse(content, req.body.uid);
+      console.log('Sending Payload for `/scarlet/talk`');
+      const msgCon = await Scarlet.prototype.getResponse(content, req.body.uid);
+      console.log(`Message Content From API: ${msgCon}`);
+      return await res.send({status: 200, message: msgCon});
     }
   }
 };
@@ -68,7 +73,9 @@ exports.deleteScarletAI = async (req, res) => {
     if (!content) return res.send({status: 401, message: 'No Message Content found'});
     else {
       // eslint-disable-next-line new-cap
-      await Scarlet.prototype.PurgeAI(data.token, data.uid);
+      await Scarlet.prototype.PurgeAI(data.token, data.uid).then(async (res) => {
+        res.send({status: 200, result: res});
+      });
     }
   }
 };
