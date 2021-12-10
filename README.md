@@ -1,4 +1,4 @@
-<h1 style="text-align:center">ScarletAI - Terminated and Not Supported</h1>
+<h1 style="text-align:center">ScarletAI</h1>
 
 <h2 style="text-align:center">Description</h2>
 
@@ -28,7 +28,7 @@
 
 ```js
 // For creating your very own account! (TypeScript)
-import { post } from "node-fetch";
+import * as post from "node-fetch";
 post("https://api.scarletai.xyz/users", {
     body: {
         username: "your username",
@@ -38,7 +38,7 @@ post("https://api.scarletai.xyz/users", {
 }
 
 // In JavaScript
-const { post } = require("node-fetch");
+const post = require("node-fetch");
 post("https://api.scarletai.xyz/users", {
     body: {
         username: "your username",
