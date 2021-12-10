@@ -3,7 +3,6 @@
 /* eslint-disable no-invalid-this */
 const UserModel = require('../models/users.model');
 const bcrypt = require('bcrypt');
-const {Wallet} = require('../../block_chain/models/transaction.model');
 const {syslog, userlog} = require('../../logs/logger');
 
 exports.docs = (req, res) => {
@@ -36,9 +35,6 @@ exports.insert = async (req, res) => {
             password: await hash,
             permissionLevel: 1,
             token: `u.${makeid(43)}_${makeid(28)}`,
-            uWallet: new Wallet(),
-            privateKey: new Wallet().privateKey,
-            publicKey: new Wallet().publicKey,
           }); // user.save().catch(e, () => res.send({status: 501, message: 'internal error'}), console.error(e));
           syslog.info(`Successfully Created a User`);
           return await res.status(200).send(`Successfully created the user\n ${await user.uuid}\n${await user.username}\n ${await user.token}\nPlease don't forget your password! ${req.body.password}`);
