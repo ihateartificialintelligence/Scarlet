@@ -36,9 +36,10 @@ app.use(function(req, res, next) {
 }); **/
 
 UsersRouter.routesConfig(app), SemanticsRouter.routesConfig(app);
-setTimeout(() => {
-    app.listen((3600), '0.0.0.0', function() {
-        return syslog.info(`app listening at port ${3600}`),
-        console.log(`App listening at port ${3600}`);
-    }).then(process.abort)
-}, 5000*2);
+app.listen((3600), '0.0.0.0', function() {
+    return syslog.info(`app listening at port ${3600}`),
+    console.log(`Test Successfully listening on: ${3600} - Now terminating`),
+    setTimeout(function() {
+        process.exit(0);
+    }, 5000);
+});
