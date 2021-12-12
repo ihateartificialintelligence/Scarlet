@@ -1,0 +1,42 @@
+const { MessageEmbed } = require("discord.js");
+
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const guildData = require("../../../extra/database/handlers/models/guild.model");
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName("set-guild")
+        .setDescription("Create the Guild Settings")
+        .addStringOption(opt => opt.setName("prefix").setDescription("Create a Custom prefix"))
+        .addChannelOption(opt => opt.setName("log-channel").setDescription("Register the log channel"))
+        .addIntegerOption(opt => opt.setName("tolerance-level").setDescription("Adjust the tolerance level for automod"))
+        .addBooleanOption(opt => opt.setName("enable").setDescription("Enable or Disable automod")),
+    async execute(i) {
+        const logChannel = i.options.getChannel("log-channel"),
+            toleranceLevel = i.options.getInteger("tolerance-level"),
+            enable = i.options.getBoolean("enable"),
+            prefix = i.options.getString("prefix");
+        const checkForGuild = await guildData.findOne({
+            id: i.guild.id
+        });
+        if (!!checkForGuild) return i.reply("You already set the guild settings!");
+        const confirmEmbed = await new MessageEmbed()
+            .setTitle(`Guild Settings - ${i.guild.name}`)
+            .addField("Prefix", `${prefix}`, true)
+            .setThumbnail(i.guild.iconURL())
+            .addField("Log Channel", `${logChannel}`, true)
+            .addField("Message Tolerance Level", `${toleranceLevel}`, true)
+            .addField("Enabled?", `${enable}`, true)
+            .setFooter(`Guild ID: ${i.guild.id}`)
+            .setColor("PURPLE");
+        await i.reply({content: `Set Guild settings as: \n`, embeds: [confirmEmbed] });
+        const newGuild = await guildData({
+            id: i.guild.id,
+            logs: logChannel,
+            toleranceLvl: toleranceLevel,
+            enabled: enable,
+            prefix: prefix
+        });
+        await newGuild.save().catch(e => { console.log(e.message) });
+    }
+}

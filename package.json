@@ -1,0 +1,24 @@
+{
+  "name": "kir_gith",
+  "version": "1.0.0",
+  "description": "Kir'Gith",
+  "main": "index.js",
+  "module": "true",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "cls && ts-node main.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "axios": "^0.24.0",
+    "cat-logger": "^1.0.2",
+    "cat-loggr": "^1.2.2",
+    "discord.js": "^13.2.0",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.1.1",
+    "node-fetch": "^2.6.5",
+    "path": "^0.12.7"
+  }
+}
